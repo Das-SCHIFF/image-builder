@@ -1,0 +1,26 @@
+# Use config version 2 to enable new configuration fields.
+# Config file is parsed as version 1 by default.
+version = 2
+
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    sandbox_image = "{{ containerd_pause_image }}"
+
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."*"]
+          endpoint = ["https://harbor.sce-dcn.net/v2"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/docker-hub"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.elastic.co"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/elastic"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."*.gcr.io"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."gcr.io"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.gcr.io"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."us.gcr.io"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."quay.io"]
+          endpoint = ["https://harbor.sce-dcn.net/v2/quay"]

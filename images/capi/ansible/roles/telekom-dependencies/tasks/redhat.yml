@@ -1,0 +1,20 @@
+- name: install baseline dependencies
+  yum:
+    name: "{{ telekom_rpms }}"
+    state: present
+    lock_timeout: 60
+
+- name: remove unneeded packages
+  yum:
+    name: "{{ telekom_remove_rpms }}"
+    state: absent
+    lock_timeout: 60
+    autoremove: yes
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+
+- name: Print the package facts
+  debug:
+    var: ansible_facts.packages

@@ -1,0 +1,93 @@
+# This playbook installs the taste-os client, registers the machine and
+# schedules regular scans via cron. Registration is skipped, when collector
+# script is already present which means that the machine is already registered.
+# The Playbook is also capable of updating the collector script.
+#
+# For settings see 'vars.yml'
+
+#- hosts: all
+#  become: yes
+#  become_user: root
+
+
+- name: install curl
+  package:
+    name: curl
+    state: present
+
+- name: create application directory
+  file:
+    path: "{{ install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: download taste-os client
+  get_url:
+    url: "{{ client_url }}"
+    dest: "{{ install_dir }}"
+    validate_certs: false
+  environment:
+    http_proxy: "{{ proxy_url }}"
+    https_proxy: "{{ proxy_url }}"
+
+- name: calculate sha512sum
+  stat:
+    path: "{{ install_dir }}/tos.tar"
+    checksum_algorithm: sha512
+    get_checksum: yes
+  register: tos_client_stat
+
+- name: Fail if sha512sum of taste-os client is incorrect
+  fail:
+    msg: "Error, sha512sum of tos.tar is not correct."
+  when: enable_integrity_check and tos_client_stat.stat.checksum != client_sha512sum
+
+- name: extract taste-os client
+  unarchive:
+    src: "{{ install_dir }}/tos.tar"
+    dest: "{{ install_dir }}"
+    remote_src: true
+
+- name: set parameters in config.sh
+  lineinfile:
+    path: "{{ install_dir }}/tos/config.sh"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: "^STOKEN=(.*)", line: "STOKEN=\"{{ s_token }}\"" }
+    - { regexp: "^MNAME=(.*)", line: "MNAME=\"{{ machine_name }}\"" }
+    - { regexp: "^MACHINEID=(.*)", line: "MACHINEID=\"{{ machine_id }}\"" }
+    - { regexp: "^SYSTEMID=(.*)", line: "SYSTEMID=\"{{ system_id }}\"" }
+    - { regexp: "^RISKID=(.*)", line: "RISKID=\"{{ risk_id }}\"" }
+    - { regexp: "^COMPONENT_ID=(.*)", line: "COMPONENT_ID=\"{{ component_id }}\"" }
+    - { regexp: "^PROXY=(.*)", line: "PROXY=\"{{ proxy_url }}\"" }
+    
+- name: register machine on first run
+  command: ./taste_os.sh -m reg
+  args:
+    chdir: "{{ install_dir }}/tos"
+    creates: "{{ install_dir }}/tos/collect.sh"
+    
+- name: update collector script
+  command: ./taste_os.sh -m update
+  args:
+    chdir: "{{ install_dir }}/tos"
+  when: enable_collector_update|bool
+
+- name: do scan
+  command: ./taste_os.sh -m scan
+  args:
+    chdir: "{{ install_dir }}/tos"
+  when: enable_scanning|bool
+  tags: skip_ansible_lint
+
+- name: configure cron job
+  cron:
+    name: "taste-os scan"
+    hour: "{{ cronjob_hour }}"
+    minute: "{{ cronjob_minute }}"
+    user: root
+    job: "cd {{ install_dir }}/tos && ./taste_os.sh -m scan -d {{ max_scan_delay_time }} > /dev/null 2>&1"
+    cron_file: ansible_tos_scan

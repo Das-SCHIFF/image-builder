@@ -1,0 +1,31 @@
+- name: install baseline dependencies
+  apt:
+    force_apt_get: True
+    name: "{{ telekom_debs }}"
+    state: latest
+
+- name: remove unneeded packages
+  apt:
+    force_apt_get: True
+    name: "{{ telekom_remove_debs }}"
+    state: absent
+    autoremove: yes
+    autoclean: yes
+    purge: yes
+
+- name: Disable unwanted systemd services
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  loop: "{{ telekom_disable_systemd_services }}"
+
+- name: Gather the package facts
+  package_facts:
+    manager: apt
+
+- name: Print the package facts
+  debug:
+    var: ansible_facts.packages
+
+
