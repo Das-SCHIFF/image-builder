@@ -1,0 +1,36 @@
+---
+stages:
+  - linting  # dummy stage to follow the template guidelines
+  - test
+
+yamllint:
+  stage: linting
+  image: pipelinecomponents/yamllint:latest
+  script:
+    - yamllint .
+
+shelllint:
+  stage: linting
+  image: koalaman/shellcheck-alpine:latest
+  before_script:
+    - apk update
+    - apk add git
+  script:
+    - git ls-files --exclude='*.sh' --ignored | xargs shellcheck
+
+jsonlint:
+  stage: linting
+  image: pipelinecomponents/jsonlint:latest
+  script:
+    - |
+      find . -not -path './.git/*' -name '*.json' -type f -print0 |
+      parallel --will-cite -k -0 -n1 jsonlint -q
+
+ansibleLint:
+  image: georgiapipeline/georgia-pipeline-ansible-slim
+  stage: linting
+  before_script:
+    - ansible --version
+    - ansible-lint --version
+  script:
+    - ansible-lint -x 703,701 images/capi/ansible/node.yml images/capi/ansible/haproxy.yml

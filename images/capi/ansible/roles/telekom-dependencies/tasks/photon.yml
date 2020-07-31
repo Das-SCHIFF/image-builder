@@ -1,0 +1,13 @@
+- name: Concatenate the Photon RPMs
+  set_fact:
+    telekom_photon_rpms: "{{ telekom_photon_rpms | join(' ') }}"
+
+- name: install baseline dependencies
+  command: tdnf install {{ telekom_photon_rpms }} -y
+
+- name: Concatenate the Photon RPMs to remove
+  set_fact:
+    telekom_remove_photon_rpms: "{{ telekom_remove_photon_rpms | join(' ') }}"
+
+- name: remove unneeded packages
+  command: tdnf erase {{ telekom_remove_photon_rpms }} -y
