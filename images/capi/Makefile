@@ -172,7 +172,7 @@ PACKER_WINDOWS_NODE_FLAGS := $(foreach f,$(abspath $(COMMON_WINDOWS_VAR_FILES)),
 CENTOS_VERSIONS			:=	centos-7
 PHOTON_VERSIONS			:=	photon-3
 RHEL_VERSIONS				:=	rhel-7
-UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004
+UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004 ubuntu-1804-telekom
 
 PLATFORMS_AND_VERSIONS	:=	$(CENTOS_VERSIONS) \
 							$(PHOTON_VERSIONS) \
