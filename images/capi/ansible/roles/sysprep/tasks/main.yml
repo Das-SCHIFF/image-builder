@@ -137,8 +137,7 @@
   loop:
   - { path: /root/.ssh/authorized_keys }
   when: ansible_os_family == "Flatcar"
-
-
+  
 - name: Truncate all remaining log files in /var/log
   shell:
     cmd: |

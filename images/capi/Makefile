@@ -198,7 +198,7 @@ CENTOS_VERSIONS			:=	centos-7
 FLATCAR_VERSIONS		:=	flatcar
 PHOTON_VERSIONS			:=	photon-3
 RHEL_VERSIONS			:=	rhel-7
-UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004
+UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004 ubuntu-1804-telekom
 WINDOWS_VERSIONS		:=	windows-2019 windows-2004
 
 # Set Flatcar Container Linux channel and version if not supplied

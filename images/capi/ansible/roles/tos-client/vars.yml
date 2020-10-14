@@ -1,0 +1,55 @@
+### Playbook settings
+
+# URL where the client (tos.tar) is downloaded from
+# (taken from TASTE-OS landing page)
+client_url:
+# sha512sum to check client integrity (taken from TASTE-OS landing page)
+client_sha512sum:
+# the directory where the client is installed
+install_dir: "/opt/tos-client"
+# enable check of the sha512sum
+enable_integrity_check: true
+# enable update of collector script while running the playbook
+enable_collector_update: true
+# enable scanning while running the playbook
+enable_scanning: true
+
+### Mandatory client parameters
+
+# S-Token for authentication at the collector API (incl. prefix!).
+# It can be generated in the UI.
+s_token:
+
+### Optional client parameters
+
+# Optional: Machine name as it will be shown in the UI. Uses the hostname by
+# default.
+# WARNING: Do not use spaces here!
+machine_name: "${HOSTNAME}"
+# Optional: A custom Machine ID can be defined here.
+# If undefined, the application will generate it randomly during registration.
+# HINT: Only valid UUIDs according to RFC-4122 are allowed.
+machine_id:
+# Optional: This setting can be used to automatically assign your machine to an
+# existing system. System IDs can be looked up in the UI.
+system_id:
+# Optional: This setting can be used to define the Risk Level during
+# registration. Available Risk-IDs can be looked up in the UI.
+risk_id:
+# Optional: This setting can be used to define a Component ID (UUID) which will
+# be assigned during registration.
+# Component Labels can be created in the UI. Afterwards, the ID is available
+# there as well.
+component_id:
+# URL of an HTTP proxy used to reach the collector API
+# Format: 'http://<address>:<port>'
+proxy_url:
+
+### Cron settings for regular scanning
+
+# the hour to run regular scans (please change!)
+cronjob_hour: "4"
+# the minute to run regular scans (please change!)
+cronjob_minute: "44"
+# the maximum random wait value to distribute scanning across a longer timeframe
+max_scan_delay_time: "120"
