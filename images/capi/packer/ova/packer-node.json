@@ -128,6 +128,8 @@
         "{{user `boot_command_suffix`}}"
       ],
       "boot_wait": "{{user `boot_wait`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "cluster": "{{user `cluster`}}",
       "communicator": "ssh",
       "convert_to_template": "{{user `convert_to_template`}}",
@@ -179,6 +181,8 @@
         "{{user `boot_command_suffix`}}"
       ],
       "boot_wait": "{{user `boot_wait`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "cluster": "{{user `cluster`}}",
       "communicator": "ssh",
       "convert_to_template": "{{user `convert_to_template`}}",
@@ -207,6 +211,7 @@
           "network_card": "{{user `network_card`}}"
         }
       ],
+      "notes": "Builddate: {{isotime \"2006-01-02T15:04\"}},  containerd_version: {{user `containerd_version`}} vsphere_guest_os_type: {{user `vsphere_guest_os_type`}} kubernetes_cni_semver: {{user `kubernetes_cni_semver`}} kubernetes_semver: {{user `kubernetes_semver`}} kubernetes_source_type: {{user `kubernetes_source_type`}}  vm_version: {{user `vmx_version`}}",
       "password": "{{user `password`}}",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S -E sh -c 'usermod -L {{user `ssh_username`}} && {{user `shutdown_command`}}'",
       "ssh_password": "{{user `ssh_password`}}",
@@ -394,6 +399,14 @@
       "type": "goss",
       "url": "{{user `goss_url`}}",
       "use_sudo": true,
+      "vars_env": {
+        "HTTPS_PROXY": "{{user `host_HTTPS_PROXY`}}",
+        "HTTP_PROXY": "{{user `host_HTTP_PROXY`}}",
+        "NO_PROXY": "{{user `host_NO_PROXY`}}",
+        "http_proxy": "{{user `host_http_proxy`}}",
+        "https_proxy": "{{user `host_https_proxy`}}",
+        "no_proxy": "{{user `host_no_proxy`}}"
+      },
       "vars_file": "{{user `goss_vars_file`}}",
       "vars_inline": {
         "ARCH": "amd64",
@@ -420,6 +433,7 @@
     "base_output_dir": "./output/{{user `base_build_version`}}",
     "build_timestamp": "{{timestamp}}",
     "build_version": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}",
+    "cd_dirs": "{{ user `floppy_dirs`}}",
     "cluster": "",
     "containerd_sha256": null,
     "containerd_url": "https://github.com/containerd/containerd/releases/download/v{{user `containerd_version`}}/cri-containerd-cni-{{user `containerd_version`}}-linux-amd64.tar.gz",

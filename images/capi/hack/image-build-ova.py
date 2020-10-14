@@ -145,8 +145,7 @@ def main():
     data['CONTAINERD_VERSION'] = build_data['containerd_version']
     data['KUBERNETES_SEMVER'] = build_data['kubernetes_semver']
     data['KUBERNETES_SOURCE_TYPE'] = build_data['kubernetes_source_type']
-    data['PRODUCT'] = "%s and Kubernetes %s" % (
-        build_data['os_name'], build_data['kubernetes_semver'])
+    data['PRODUCT'] = "%s and Kubernetes %s, containerd %s, cni %s " % (build_data['os_name'], build_data['kubernetes_semver'], build_data['containerd_version'],build_data['kubernetes_cni_semver'])
     data['ANNOTATION'] = "Cluster API vSphere image - %s - %s" % (data['PRODUCT'], capv_url)
     data['WAKEONLANENABLED'] = "false"
     data['TYPED_VERSION'] = build_data['kubernetes_typed_version']

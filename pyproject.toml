@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "schiff-image-builder"
+version = "0.1.0"
+description = ""
+authors = ["Maximilian Rink <maximilian.rink@telekom.de>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyvim = "^3.0.2"
+ansible = "^2.10.0"
+requests = "^2.26.0"
+tqdm = "^4.61.2"
+pyvmomi = "^7.0.2"
+six = "^1.16.0"
+dohq-artifactory = "^0.7.589"
+PyJWT = "^2.1.0"
+PyYAML = "^5.4.1"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.5.7"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

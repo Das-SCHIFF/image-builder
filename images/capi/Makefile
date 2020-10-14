@@ -223,8 +223,8 @@ CENTOS_VERSIONS			:=	centos-7
 FLATCAR_VERSIONS		:=	flatcar
 PHOTON_VERSIONS			:=	photon-3
 RHEL_VERSIONS			:=	rhel-7
-ROCKYLINUX_VERSIONS     :=  rockylinux-8
-UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004 ubuntu-2004-efi
+ROCKYLINUX_VERSIONS		:=  rockylinux-8
+UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004 ubuntu-2004-efi ubuntu-1804-telekom ubuntu-2004-telekom ubuntu-2004-efi-telekom ubuntu-2110 ubuntu-2110-efi ubuntu-2110-telekom ubuntu-2110-efi-telekom
 WINDOWS_VERSIONS		:=	windows-2019 windows-2004 windows-2022
 
 # Set Flatcar Container Linux channel and version if not supplied
@@ -267,7 +267,7 @@ DO_BUILD_NAMES 			?=	do-centos-7 do-ubuntu-1804 do-ubuntu-2004
 
 QEMU_BUILD_NAMES			?=	qemu-ubuntu-1804 qemu-ubuntu-2004 qemu-centos-7 qemu-ubuntu-2004-efi qemu-rhel-8 qemu-rockylinux-8 qemu-flatcar
 
-RAW_BUILD_NAMES                        ?=      raw-ubuntu-1804 raw-ubuntu-2004 raw-ubuntu-2004-efi
+RAW_BUILD_NAMES                        ?=      raw-ubuntu-1804 raw-ubuntu-2004 raw-ubuntu-2004-efi raw-ubuntu-2110 raw-ubuntu-2110-efi
 VBOX_BUILD_NAMES			?=      vbox-windows-2019
 
 ## --------------------------------------

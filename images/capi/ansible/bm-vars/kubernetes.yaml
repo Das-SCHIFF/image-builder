@@ -1,0 +1,20 @@
+---
+kubernetes_series: v1.20
+kubernetes_semver: v1.20.9
+kubernetes_rpm_version: 1.20.9-0
+kubernetes_deb_version: 1.20.9-00
+kubernetes_source_type: pkg
+kubernetes_http_source: https://storage.googleapis.com/kubernetes-release/release
+kubernetes_rpm_repo: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+kubernetes_rpm_gpg_key: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+kubernetes_rpm_gpg_check: true
+kubernetes_deb_repo: https://apt.kubernetes.io/ kubernetes-xenial
+kubernetes_deb_gpg_key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+kubernetes_container_registry: k8s.gcr.io
+kubernetes_load_additional_imgs: false
+crictl_version: 1.21.0
+crictl_sha256: 85c78a35584971625bf1c3bcd46e5404a90396f979d7586f18b11119cb623e24
+crictl_source_type: pkg
+sysusr_prefix: /usr
+sysusrlocal_prefix: /usr/local
+pause_image: k8s.gcr.io/pause:3.4.1

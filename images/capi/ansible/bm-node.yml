@@ -1,0 +1,77 @@
+# Copyright 2018 The Kubernetes Authors.
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+- hosts: DL20
+  become: yes
+  serial: 1
+  vars_files:
+  - bm-vars/kubernetes.yaml
+  - bm-vars/containerd.yaml
+  - bm-vars/cni.yaml
+  vars:
+    http_proxy: http://10.90.221.254:8080
+    https_proxy: http://10.90.221.254:8080
+    no_proxy: 127.0.0.1,localhost,10.0.0.0/8,.das-schiff.telekom.de,.sce-dcn.net,.intra.t-online.de,.telekom.de,.schiff.telekom.de
+  tasks:
+    - include_role:
+        name: setup
+    - include_role:
+        name: node
+    - include_role:
+        name: providers
+    - include_role:
+        name: containerd
+    - include_role:
+        name: kubernetes
+    - include_role:
+        name: "schiff.images.HPE_DL20_MASTER_MANUAL"
+  environment:
+    http_proxy: "{{ http_proxy | default('') }}"
+    https_proxy: "{{ https_proxy | default('') }}"
+    no_proxy: "{{ no_proxy | default('') }}"
+    HTTP_PROXY: "{{ http_proxy | default('') }}"
+    HTTPS_PROXY: "{{ https_proxy | default('') }}"
+    NO_PROXY: "{{ no_proxy | default('') }}"
+
+- hosts: DL325
+  become: yes
+  strategy: free
+  vars_files:
+  - bm-vars/kubernetes.yaml
+  - bm-vars/containerd.yaml
+  - bm-vars/cni.yaml
+  vars:
+    http_proxy: http://sa_Proxy-M2I_Mavenir5GC:qn2K7d7QG9So2KxL@10.90.221.254:8080
+    https_proxy: http://sa_Proxy-M2I_Mavenir5GC:qn2K7d7QG9So2KxL@10.90.221.254:8080
+    no_proxy: 127.0.0.1,localhost,10.0.0.0/8,das-schiff.telekom.de,.sce-dcn.net,.intra.t-online.de
+  tasks:
+    - include_role:
+        name: setup
+    - include_role:
+        name: node
+    - include_role:
+        name: providers
+    - include_role:
+        name: containerd
+    - include_role:
+        name: kubernetes
+    - include_role:
+        name: "schiff.images.HPE_DL325_WORKER_MANUAL"
+  environment:
+    http_proxy: "{{ http_proxy | default('') }}"
+    https_proxy: "{{ https_proxy | default('') }}"
+    no_proxy: "{{ no_proxy | default('') }}"
+    HTTP_PROXY: "{{ http_proxy | default('') }}"
+    HTTPS_PROXY: "{{ https_proxy | default('') }}"
+    NO_PROXY: "{{ no_proxy | default('') }}"

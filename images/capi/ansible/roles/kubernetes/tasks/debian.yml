@@ -28,6 +28,7 @@
 - name: Install Kubernetes
   apt:
     name: "{{ packages }}"
+    force: yes
   vars:
     packages:
       - "kubelet={{ kubernetes_deb_version }}"

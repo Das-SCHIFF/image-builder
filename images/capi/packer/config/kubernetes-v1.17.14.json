@@ -1,0 +1,18 @@
+{
+  "crictl_sha256": "87d8ef70b61f2fe3d8b4a48f6f712fd798c6e293ed3723c1e4bbb5052098f0ae",
+  "crictl_source_type": "http",
+  "crictl_version": "1.19.0",
+  "kubernetes_container_registry": "k8s.gcr.io",
+  "kubernetes_deb_gpg_key": "https://packages.cloud.google.com/apt/doc/apt-key.gpg",
+  "kubernetes_deb_repo": "\"https://apt.kubernetes.io/ kubernetes-xenial\"",
+  "kubernetes_deb_version": "1.17.14-00",
+  "kubernetes_http_source": "https://storage.googleapis.com/kubernetes-release/release",
+  "kubernetes_load_additional_imgs": "false",
+  "kubernetes_rpm_gpg_check": "True",
+  "kubernetes_rpm_gpg_key": "\"https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg\"",
+  "kubernetes_rpm_repo": "https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64",
+  "kubernetes_rpm_version": "1.17.14-0",
+  "kubernetes_semver": "v1.17.14",
+  "kubernetes_series": "v1.17",
+  "kubernetes_source_type": "pkg"
+}

@@ -1,0 +1,7 @@
+{
+  "containerd_additional_settings": null,
+  "containerd_cri_socket": "/var/run/containerd/containerd.sock",
+  "containerd_pause_image": "k8s.gcr.io/pause:3.3",
+  "containerd_sha256": "9d0fd5f4d2bc58b345728432b7daac75fc99c1da91afa4f41e6103f618e74012",
+  "containerd_version": "1.4.2"
+}
