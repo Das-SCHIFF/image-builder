@@ -15,6 +15,7 @@
 - hosts: all
   become: yes
 
+
   tasks:
     - include_role:
         name: node
@@ -32,6 +33,7 @@
       when: custom_role | default(false)|bool
     - include_role:
         name: sysprep
+
 
   environment:
     HTTP_PROXY: "{{ http_proxy | default('') }}"
