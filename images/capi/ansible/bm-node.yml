@@ -14,13 +14,21 @@
 ---
 - hosts: all
   become: yes
-
-
+  strategy: free
+  vars_files:
+  - bm-vars/kubernetes.yaml
+  - bm-vars/containerd.yaml
+  - bm-vars/goss-args.yaml
+  - bm-vars/cni.yaml
+  vars:
+    http_proxy: http://10.102.8.28:3128
+    https_proxy: http://10.102.8.28:3128
+    no_proxy: 127.0.0.1,localhost,10.0.0.0/8,das-schiff.telekom.de,.sce-dcn.net,.intra.t-online.de
   tasks:
     - include_role:
         name: node
-    - include_role:
-        name: providers
+    # - include_role:
+    #     name: providers
     - include_role:
         name: containerd
     - include_role:
@@ -31,8 +39,8 @@
       loop_control:
         loop_var: role
       when: custom_role | default(false)|bool
-    - include_role:
-        name: sysprep
+
+
 
 
   environment:
@@ -42,4 +50,3 @@
     HTTP_PROXY: "{{ http_proxy | default('') }}"
     HTTPS_PROXY: "{{ https_proxy | default('') }}"
     NO_PROXY: "{{ no_proxy | default('') }}"
-    PYTHONPATH: "{{ python_path }}"

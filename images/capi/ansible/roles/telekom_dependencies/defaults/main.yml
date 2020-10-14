@@ -1,0 +1,112 @@
+---
+ssh_hardening: false
+
+telekom_rpms:
+  - nfs-utils
+  - ipvsadm
+
+telekom_debs:
+  - nfs-common
+  - python-apt
+  - ipvsadm
+  - vim
+
+telekom_photon_rpms:
+  - nfs-utils
+  - ipvsadm
+
+telekom_remove_rpms:
+  - telnet
+  - rsync
+  - socat
+  - tcpdump
+  - build-essentials
+
+telekom_remove_debs:
+  - hyperv-daemons
+
+telekom_remove_photon_rpms:
+
+telekom_disable_systemd_services:
+  - hv-kvp-daemon.service
+
+telekom_registry_mirrors:
+  harbor-new:
+    - harbor.das-schiff.telekom.de
+  harbor-old:
+    - harbor.sce-dcn.net
+  # artifactory:
+  #   - artifactory.devops.telekom.de
+  artifactory-dockerhub:
+    - dockerhub.devops.telekom.de
+telekom_containerd_registry_mirrors:
+  - name: docker.io
+    mirrors:
+      - path: v2/hub.docker.com
+        type: harbor-new
+      - path: v2/docker-hub
+        type: harbor-new
+      - path: v2/docker-hub
+        type: harbor-old
+      - path: v2
+        type: artifactory-dockerhub
+  - name: docker.elastic.co
+    mirrors:
+      - path: v2/elastic
+        type: harbor-new
+      - path: v2/elastic
+        type: harbor-old
+  - name: gcr.io
+    mirrors:
+      - path: v2/gcr.io
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-old
+  - name: k8s.gcr.io
+    mirrors:
+      - path: v2/k8s.gcr.io
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-old
+  - name: us.gcr.io
+    mirrors:
+      - path: v2/us.gcr.io
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-old
+  - name: eu.gcr.io
+    mirrors:
+      - path: v2/eu.gcr.io
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-old
+  - name: asia.gcr.io
+    mirrors:
+      - path: v2/asia.gcr.io
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-new
+      - path: v2/gcr
+        type: harbor-old
+  - name: quay.io
+    mirrors:
+      - path: v2/quay.io
+        type: harbor-new
+      - path: v2/quay
+        type: harbor-new
+      - path: v2/quay
+        type: harbor-old
+  - name: ghcr.io
+    mirrors:
+      - path: v2/ghcr.io
+        type: harbor-new
+      - path: v2/ghcr.io
+        type: harbor-old

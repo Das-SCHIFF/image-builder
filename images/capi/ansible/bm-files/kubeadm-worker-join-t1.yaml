@@ -1,0 +1,16 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta1
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: 10.23.143.2:6443
+    caCertHashes:
+    - sha256:1da086f7171b63121da1096cdaa5ae7e37940d0a8e34a637c52762a46a8a08db 
+    token: yz1ft1.54qus05yl7f08pop
+    unsafeSkipCAVerification: false
+kind: JoinConfiguration
+nodeRegistration:
+  criSocket: /var/run/containerd/containerd.sock
+  kubeletExtraArgs:
+    container-log-max-files: "5"
+    container-log-max-size: 10Mi
+    tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256

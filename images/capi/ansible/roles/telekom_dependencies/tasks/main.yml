@@ -1,0 +1,126 @@
+---
+- name: Save packer_builder_type to file
+  local_action:
+    module: copy
+    content: "{{ packer_builder_type |to_nice_yaml }}"
+    dest: "packer_builder_type.yml"
+
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Populate general facts
+  ansible.builtin.gather_facts:
+
+- name: Populate package facts
+  ansible.builtin.package_facts:
+
+- name: Save Facts to file
+  local_action:
+    module: copy
+    content: "{{ ansible_facts |to_nice_yaml }}"
+    dest: "ansible_facts.yml"
+
+- name: Configure NTP Servers
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    create: yes
+    line: "{{ item }}"
+  loop:
+    - "server 10.90.221.13 iburst"
+    - "server 10.90.221.29 iburst"
+    - "server 10.90.221.45 iburst"
+    - "server 10.90.221.61 iburst"
+    - "server 10.90.221.77 iburst"
+    - "server 172.22.13.10 iburst"
+    - "server 172.22.13.11 iburst"
+    - "server 172.22.13.12 iburst"
+    - "server 172.22.13.13 iburst"
+    - "server 172.22.13.14 iburst"
+    - "server 10.90.24.18 iburst"
+    - "server 10.90.24.2 iburst"
+    - "server 10.108.144.33 iburst"
+
+- name: Make sure systemd-timesyncd isnt running and enabled
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    state: stopped
+    enabled: no
+    masked: yes
+
+- name: Copy scripts
+  copy:
+    dest: "/{{ item }}"
+    src: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - usr/bin/expand.sh
+    - etc/systemd/system/auto-expand.service
+
+
+- name: Copy in templates
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - etc/containerd/config.toml
+
+- name: Ensure the unit is enabled for next boot.
+  service:
+    name: auto-expand.service
+    enabled: true
+
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- import_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- import_tasks: photon.yml
+  when: ansible_os_family == "VMware Photon OS"
+
+- name: Include SSH-Hardening-Role
+  include_role:
+    name: ssh-hardening
+  when: ssh_hardening
+  vars:
+    network_ipv6_enable: true
+    ssh_max_auth_retries: 5
+    sftp_enabled: true
+    sftp_chroot: false
+    ssh_client_hardening: true
+
+- name: Copy tasteOS
+  copy:
+    dest: "/{{ item }}"
+    src: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - tmp/collect.sh
+
+- name: Run TasteOS collector
+  ansible.builtin.command: ./collect.sh
+  args:
+    chdir: "/tmp"
+  register: tasteos_results
+
+- name: remove TasteOS Files
+  file:
+    state: absent
+    path: "{{ item }}"
+  loop:
+  - /tmp/collect.sh
+  - /tmp/collector-err-temp
+  - /tmp/collector-out-temp
+
+- name: Save TasteOS Output to file
+  local_action:
+    module: copy
+    content: "{{ tasteos_results.stdout  }}"
+    dest: "results.txt"
