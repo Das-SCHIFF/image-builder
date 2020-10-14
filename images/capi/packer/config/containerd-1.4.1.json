@@ -1,0 +1,5 @@
+{
+  "containerd_pause_image": "k8s.gcr.io/pause:3.3",
+  "containerd_sha256": "744ca14c62f5b2189c9fc22e9353508e49c85ab16038f3d74a852e6842e34fa3",
+  "containerd_version": "1.4.1"
+}

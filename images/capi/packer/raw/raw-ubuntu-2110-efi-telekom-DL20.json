@@ -1,0 +1,15 @@
+{
+  "CI_COMMIT_REF_SLUG": "{{env `CI_COMMIT_REF_SLUG`}}",
+  "artifactory_key": "{{env `artifactory_key`}}",
+  "artifactory_user": "{{env `artifactory_user`}}",
+  "build_name": "ubuntu-2110-DL20-{{isotime \"2006-01-02T15-04z\"}}",
+  "custom_post_processor": "true",
+  "custom_post_processor_command": "curl -u {{user `artifactory_user`}}:{{user `artifactory_key`}} -T output/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}/{{user `build_name`}}-kube-{{user `kubernetes_semver`}} \"https://artifactory.devops.telekom.de/artifactory/schiff-generic/qemu-images/ubuntu/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}.qcow2;CI_COMMIT_REF_SLUG={{user `CI_COMMIT_REF_SLUG`}};os_display_name={{user `os_display_name` | replace_all \" \" \"-\" }};KUBERNETES_VERSION={{user `kubernetes_semver`}};CONTAINERD_VERSION={{user `containerd_version`}}\" && qemu-img convert -O qcow2 -c output/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}/{{user `build_name`}}-kube-{{user `kubernetes_semver`}} output/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}-compressed && curl -u {{user `artifactory_user`}}:{{user `artifactory_key`}} -T output/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}-compressed \"https://artifactory.devops.telekom.de/artifactory/schiff-generic/qemu-images/ubuntu/{{user `build_name`}}-kube-{{user `kubernetes_semver`}}-compressed.qcow2;CI_COMMIT_REF_SLUG={{user `CI_COMMIT_REF_SLUG`}};os_display_name={{user `os_display_name` | replace_all \" \" \"-\" }};KUBERNETES_VERSION={{user `kubernetes_semver`}};CONTAINERD_VERSION={{user `containerd_version`}}\" && echo \"BUILD_VERSION={{user `build_version`}}\nKUBERNETES_VERSION={{user `kubernetes_semver`}}\nCONTAINERD_VERSION={{user `containerd_version`}}\" >> \"../../build.env\"",
+  "custom_role": "true",
+  "custom_role_names": "schiff.images.HPE_DL20_MASTER",
+  "cpus": "8",
+  "memory": "4096",
+  "disk_size": "20480",
+  "format": "qcow2"
+
+}

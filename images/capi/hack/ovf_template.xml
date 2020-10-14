@@ -147,19 +147,13 @@
     <vmw:BootOrderSection vmw:instanceId="8" vmw:type="disk">
       <Info>Virtual hardware device boot order</Info>
     </vmw:BootOrderSection>
-    <EulaSection>
-      <Info>An end-user license agreement</Info>
-      <License>
-${EULA}
-      </License>
-    </EulaSection>
     <ProductSection>
       <Info>Information about the installed software</Info>
       <Product>${PRODUCT}</Product>
-      <Vendor>VMware Inc.</Vendor>
+      <Vendor>DTAG</Vendor>
       <Version>${TYPED_VERSION}</Version>
       <FullVersion>${TYPED_VERSION}</FullVersion>
-      <VendorUrl>https://vmware.com</VendorUrl>
+      <VendorUrl>https://schiff.telekom.de</VendorUrl>
       <Category>Cluster API Provider (CAPI)</Category>
       <Property ovf:userConfigurable="false" ovf:value="${BUILD_TIMESTAMP}" ovf:type="string" ovf:key="BUILD_TIMESTAMP"/>
       <Property ovf:userConfigurable="false" ovf:value="${BUILD_DATE}" ovf:type="string" ovf:key="BUILD_DATE"/>

@@ -4,14 +4,17 @@
       "accelerator": "{{user `accelerator`}}",
       "boot_command": [
         "{{user `boot_command_prefix`}}",
-        "http://{{ .HTTPIP }}:{{ .HTTPPort }}",
+        "{{user `boot_media_path`}}",
         "{{user `boot_command_suffix`}}"
       ],
       "boot_wait": "{{user `boot_wait`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "cpus": "{{user `cpus`}}",
       "disk_interface": "virtio-scsi",
       "disk_size": "{{user `disk_size`}}",
       "firmware": "{{user `firmware`}}",
+      "floppy_dirs": "{{ user `floppy_dirs`}}",
       "format": "{{user `format`}}",
       "headless": "{{user `headless`}}",
       "http_directory": "./packer/raw/linux/{{user `distro_name`}}/http/",
@@ -26,13 +29,16 @@
       "ssh_timeout": "2h",
       "ssh_username": "{{user `ssh_username`}}",
       "type": "qemu",
-      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}"
+      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}",
+      "qemuargs": [
+        [ "-vga", "virtio"]
+      ]
     },
     {
       "accelerator": "{{user `accelerator`}}",
       "boot_command": [
         "{{user `boot_command_prefix`}}",
-        "http://{{ .HTTPIP }}:{{ .HTTPPort }}",
+        "{{user `boot_media_path`}}",
         "{{user `boot_command_suffix`}}"
       ],
       "boot_wait": "{{user `boot_wait`}}",
@@ -40,6 +46,7 @@
       "disk_interface": "virtio-scsi",
       "disk_size": "{{user `disk_size`}}",
       "firmware": "{{user `firmware`}}",
+      "floppy_dirs": "{{ user `floppy_dirs`}}",
       "format": "{{user `format`}}",
       "headless": "{{user `headless`}}",
       "http_directory": "./packer/raw/linux/{{user `distro_name`}}/http/",
@@ -55,7 +62,10 @@
       "ssh_timeout": "2h",
       "ssh_username": "{{user `ssh_username`}}",
       "type": "qemu",
-      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}"
+      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}",
+      "qemuargs": [
+        [ "-vga", "virtio"]
+      ]
     }
   ],
   "post-processors": [
@@ -142,6 +152,7 @@
     "boot_wait": "10s",
     "build_target": "raw",
     "build_timestamp": "{{timestamp}}",
+    "cd_dirs": "{{ user `floppy_dirs`}}",
     "containerd_sha256": null,
     "containerd_url": "https://github.com/containerd/containerd/releases/download/v{{user `containerd_version`}}/cri-containerd-cni-{{user `containerd_version`}}-linux-amd64.tar.gz",
     "containerd_version": null,
