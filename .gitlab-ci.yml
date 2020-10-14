@@ -1,0 +1,52 @@
+---
+stages:
+  - linting
+  - build
+  - test
+
+
+yamllint:
+  stage: linting
+  image: pipelinecomponents/yamllint:latest
+  script:
+    - yamllint .
+  allow_failure: true
+
+shelllint:
+  stage: linting
+  image: koalaman/shellcheck-alpine:latest
+  before_script:
+    - apk update
+    - apk add git
+  script:
+    - git ls-files --exclude='*.sh' --ignored | xargs shellcheck
+  allow_failure: true
+
+jsonlint:
+  stage: linting
+  image: pipelinecomponents/jsonlint:latest
+  script:
+    - |
+      find . -not -path './.git/*' -name '*.json' -type f -print0 |
+      parallel --will-cite -k -0 -n1 jsonlint -q
+  allow_failure: true
+
+ansibleLint:
+  image: georgiapipeline/georgia-pipeline-ansible-slim
+  stage: linting
+  before_script:
+    - ansible --version
+    - ansible-lint --version
+  script:
+    - ansible-lint -x 703,701 images/capi/ansible/node.yml images/capi/ansible/haproxy.yml
+  allow_failure: true
+
+build-ubuntu-18.04-1.19.4:
+  image: 
+    name: hashicorp/packer:full
+    entrypoint: ["/bin/sh"]
+  stage: build
+  script:
+    - cd images/capi/
+    - make deps-ova
+    - make build-node-ova-vsphere-ubuntu-1804

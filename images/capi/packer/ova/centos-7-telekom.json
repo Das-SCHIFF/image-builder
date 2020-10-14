@@ -1,0 +1,13 @@
+{
+  "build_name": "centos-7",
+  "distro_name": "centos",
+  "os_display_name": "CentOS 7",
+  "guest_os_type": "centos7-64",
+  "vsphere_guest_os_type": "centos7_64Guest",
+  "iso_url": "https://mirrors.edge.kernel.org/centos/7.7.1908/isos/x86_64/CentOS-7-x86_64-DVD-1908.iso",
+  "iso_checksum": "9bba3da2876cb9fcf6c28fb636bcbd01832fe6d84cd7445fa58e44e569b3b4fe",
+  "iso_checksum_type": "sha256",
+  "boot_command_prefix": "<tab> text ks=",
+  "boot_command_suffix": "/7/ks-telekom.cfg<enter><wait>",
+  "shutdown_command": "sys-unconfig"
+}

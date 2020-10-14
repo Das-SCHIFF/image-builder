@@ -1,0 +1,10 @@
+[Unit]
+Description=BootUP AutoExpand of volumes
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/bin/expand.sh false /dev/sda2 /dev/sda5
+Type=simple
+[Install]
+WantedBy=multi-user.target
