@@ -156,15 +156,15 @@
   loop:
   - { path: /var/log/sa, state: directory }
 
-- name: Truncate all remaining log files in /var/log
-  shell:
-    cmd: |
-      find /var/log -type f -iname '*.log' | xargs truncate -s 0
+# - name: Truncate all remaining log files in /var/log
+#   shell:
+#     cmd: |
+#       find /var/log -type f -iname '*.log' | xargs truncate -s 0
 
-- name: Delete all logrotated log zips
-  shell:
-    cmd: |
-      find /var/log -type f -name '*.gz' -exec rm {} +
+# - name: Delete all logrotated log zips
+#   shell:
+#     cmd: |
+#       find /var/log -type f -name '*.gz' -exec rm {} +
 
 - name: Remove swapfile
   file:
