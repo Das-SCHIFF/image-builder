@@ -1,5 +1,6 @@
 ---
 use_tasteos: false
+ssh_hardening: false
 
 telekom_rpms:
  - nfs-utils
