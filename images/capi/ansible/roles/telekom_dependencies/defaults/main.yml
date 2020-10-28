@@ -1,0 +1,31 @@
+---
+use_tasteos: false
+
+telekom_rpms:
+ - nfs-utils
+
+telekom_debs:
+ - nfs-common
+ - python-apt
+
+telekom_photon_rpms:
+ - nfs-utils
+
+
+telekom_remove_rpms:
+ - telnet
+ - rsync
+ - socat
+ - tcpdump
+ - build-essentials
+
+telekom_remove_debs:
+ - hyperv-daemons
+
+
+
+telekom_remove_photon_rpms:
+
+
+telekom_disable_systemd_services:
+ - hv-kvp-daemon.service

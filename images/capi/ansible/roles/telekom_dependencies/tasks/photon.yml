@@ -4,6 +4,7 @@
 
 - name: install baseline dependencies
   command: tdnf install {{ telekom_photon_rpms }} -y
+  changed_when: '"Nothing to do" not in distro.stderr'
 
 - name: Concatenate the Photon RPMs to remove
   set_fact:
@@ -11,3 +12,4 @@
 
 - name: remove unneeded packages
   command: tdnf erase {{ telekom_remove_photon_rpms }} -y
+  changed_when: '"Nothing to do" not in distro.stderr'

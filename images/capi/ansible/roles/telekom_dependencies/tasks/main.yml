@@ -1,0 +1,47 @@
+---
+- name: Print packer_builder_type
+  debug:
+    var: packer_builder_type
+
+- name: Print facts
+  debug:
+    var: ansible_facts
+
+- name: Copy scripts
+  copy:
+    dest: "/{{ item }}"
+    src: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - usr/bin/expand.sh
+    - etc/systemd/system/auto-expand.service
+
+
+- name: Copy in templates
+  template:
+    dest: "/{{ item }}"
+    src: "{{ item }}.j2"
+    mode: 0755
+  loop:
+    - etc/containerd/config.toml
+
+- name: Ensure the unit is enabled for next boot.
+  service:
+    name: auto-expand.service
+    enabled: true
+
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- import_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- import_tasks: photon.yml
+  when: ansible_os_family == "VMware Photon OS"
+
+- name: Include TasteOS-Role
+  include_role:
+    name: tos-client
+  when: use_tasteos
