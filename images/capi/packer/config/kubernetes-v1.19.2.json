@@ -14,5 +14,5 @@
   "kubernetes_load_additional_imgs": "false",
   "crictl_version": "1.19.0",
   "crictl_sha256": "87d8ef70b61f2fe3d8b4a48f6f712fd798c6e293ed3723c1e4bbb5052098f0ae",
-  "crictl_source_type": "pkg"
+  "crictl_source_type": "http"
 }
