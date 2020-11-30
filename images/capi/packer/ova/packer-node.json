@@ -113,7 +113,8 @@
       "vnc_disable_password": "{{user `vnc_disable_password`}}",
       "format": "{{user `format`}}",
       "vmx_data": {
-        "ethernet0.networkName": "{{user `network`}}"
+        "ethernet0.networkName": "{{user `network`}}",
+        "firmware": "{{ user `vmware_firmware`}}"
       }
     },
     {
@@ -158,7 +159,8 @@
       "vnc_disable_password": "{{user `vnc_disable_password`}}",
       "format": "{{user `format`}}",
       "vmx_data": {
-        "ethernet0.networkName": "{{user `network`}}"
+        "ethernet0.networkName": "{{user `network`}}",
+        "firmware": "{{ user `vmware_firmware`}}"
       }
     },
     {
@@ -186,6 +188,7 @@
       "CPUs": 1,
       "cpu_cores": 1,
       "RAM": 2048,
+      "firmware": "{{ user `vmware_firmware`}}",
       "disk_controller_type": "{{user `disk_controller_type`}}",
       "guest_os_type": "{{user `vsphere_guest_os_type`}}",
       "boot_wait": "{{user `boot_wait`}}",
@@ -240,6 +243,7 @@
       "CPUs": 1,
       "cpu_cores": 1,
       "RAM": 2048,
+      "firmware": "{{ user `vmware_firmware`}}",
       "disk_controller_type": "{{user `disk_controller_type`}}",
       "guest_os_type": "{{user `vsphere_guest_os_type`}}",
       "boot_wait": "{{user `boot_wait`}}",
@@ -288,6 +292,7 @@
       "CPUs": 4,
       "cpu_cores": 12,
       "RAM": 16384,
+      "firmware": "{{ user `vmware_firmware`}}",
       "linked_clone": "{{user `linked_clone`}}",
       "communicator": "ssh",
       "ssh_username": "{{user `ssh_username`}}",
