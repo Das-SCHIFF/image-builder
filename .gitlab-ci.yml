@@ -80,6 +80,7 @@ build-ubuntu-18.04-1.19.4:
       - ./images/capi/output/
 
 build-ubuntu-20.04-1.19.4:
+  when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
