@@ -58,6 +58,9 @@ docker-build-image:
   needs: []
 
 build-ubuntu-18.04-1.19.4:
+  variables:
+    PACKER_LOG_PATH: "packer.log"
+    PACKER_LOG: "1"
   tags: 
     - docker
     - JOS-2011
@@ -77,6 +80,9 @@ build-ubuntu-18.04-1.19.4:
       - ./images/capi/output/
 
 build-ubuntu-20.04-1.19.4:
+  variables:
+    PACKER_LOG_PATH: "packer.log"
+    PACKER_LOG: "1"
   tags: 
     - docker
     - JOS-2011
