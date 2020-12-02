@@ -66,12 +66,15 @@ build-ubuntu-18.04-1.19.4:
     entrypoint: [""]
   stage: build
   script:
+    - env
     - cd images/capi/
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    when: always
     paths:
-      - /root/packer.log
+      - ./**/packer.log
+      - ./images/capi/output/
 
 build-ubuntu-20.04-1.19.4:
   tags: 
@@ -82,9 +85,12 @@ build-ubuntu-20.04-1.19.4:
     entrypoint: [""]
   stage: build
   script:
+    - env
     - cd images/capi/
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    when: always
     paths:
-      - /root/packer.log
+      - ./**/packer.log
+      - ./images/capi/output/
