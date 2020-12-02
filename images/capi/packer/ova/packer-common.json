@@ -25,5 +25,11 @@
   "vnc_bind_address": "127.0.0.1",
   "vnc_disable_password": "false",
   "vnc_port_min": "5900",
-  "vnc_port_max": "6000"
+  "vnc_port_max": "6000",
+  "host_HTTP_PROXY": "{{env `HTTP_PROXY`}}",
+  "host_HTTPS_PROXY": "{{env `HTTPS_PROXY`}}",
+  "host_NO_PROXY": "{{env `NO_PROXY`}}",
+  "host_http_proxy": "{{env `http_proxy`}}",
+  "host_https_proxy": "{{env `https_proxy`}}",
+  "host_no_proxy": "{{env `no_proxy`}}"
 }

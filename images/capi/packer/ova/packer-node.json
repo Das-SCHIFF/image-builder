@@ -356,6 +356,14 @@
       ],
       "url": "{{user `goss_url`}}",
       "use_sudo": true,
+      "vars_env": {
+        "HTTP_PROXY": "{{user `host_HTTP_PROXY`}}",
+        "HTTPS_PROXY": "{{user `host_HTTPS_PROXY`}}",
+        "NO_PROXY": "{{user `host_NO_PROXY`}}",
+        "http_proxy": "{{user `host_http_proxy`}}",
+        "https_proxy": "{{user `host_https_proxy`}}",
+        "no_proxy": "{{user `host_no_proxy`}}"
+      },
       "vars_inline": {
         "OS": "{{user `distro_name` | lower}}",
         "ARCH": "amd64",
