@@ -6,19 +6,11 @@ version = 2
   [plugins."io.containerd.grpc.v1.cri"]
     sandbox_image = "{{ containerd_pause_image }}"
 
+    {% if telekom_containerd_registry_mirrors is defined and telekom_registry_mirrors is defined %}
     [plugins."io.containerd.grpc.v1.cri".registry]
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/docker-hub"]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.elastic.co"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/elastic"]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."*.gcr.io"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."gcr.io"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.gcr.io"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."us.gcr.io"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/gcr"]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."quay.io"]
-          endpoint = ["https://harbor.sce-dcn.net/v2/quay"]
+      {% for telekom_containerd_registry_mirror in telekom_containerd_registry_mirrors %}
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."{{ telekom_containerd_registry_mirror.name }}"]
+          endpoint = [{% for telekom_mirror_config in telekom_containerd_registry_mirror.mirrors %}{% for telekom_registry_mirror in telekom_registry_mirrors[telekom_mirror_config.type] %}"https://{{ telekom_registry_mirror }}/{{ telekom_mirror_config.path }}"{{ '' if loop.last else ',' }}{% endfor %}{{ '' if loop.last else ',' }}{% endfor %}]
+      {% endfor %}
+      {% endif %}
