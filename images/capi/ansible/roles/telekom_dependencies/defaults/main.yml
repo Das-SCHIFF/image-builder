@@ -30,3 +30,47 @@ telekom_remove_photon_rpms:
 
 telekom_disable_systemd_services:
  - hv-kvp-daemon.service
+
+telekom_registry_mirrors:
+  harbor:
+    - harbor.das-schiff.telekom.de
+    - harbor.sce-dcn.net
+  artifactory:
+    - artifactory.devops.telekom.de
+
+
+telekom_containerd_registry_mirrors:
+  - name: docker.io
+    mirrors:
+      - path: v2/docker-hub
+        type: harbor
+      - path: v2/docker.bintray.io
+        type: artifactory
+  - name: docker.elastic.co
+    mirrors:
+      - path: v2/elastic
+        type: harbor
+  - name: "*.gcr.io"
+    mirrors:
+      - path: v2/gcr
+        type: harbor
+  - name: gcr.io
+    mirrors:
+      - path: v2/gcr
+        type: harbor
+  - name: k8s.gcr.io
+    mirrors:
+      - path: v2/gcr
+        type: harbor
+  - name: us.gcr.io
+    mirrors:
+      - path: v2/gcr
+        type: harbor
+  - name: quay.io
+    mirrors:
+      - path: v2/quay
+        type: harbor
+  - name: ghcr.io
+    mirrors:
+      - path: v2/ghcr.io
+        type: harbor
