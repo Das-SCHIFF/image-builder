@@ -1,0 +1,8 @@
+---
+containerd_version: 1.4.3
+containerd_sha256: 2697a342e3477c211ab48313e259fd7e32ad1f5ded19320e6a559f50a82bff3d
+containerd_pause_image: k8s.gcr.io/pause:3.3
+containerd_additional_settings: ""
+containerd_url: https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/cri-containerd-cni-{{ containerd_version }}-linux-amd64.tar.gz
+crictl_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v{{ crictl_version }}/crictl-v{{ crictl_version }}-linux-amd64.tar.gz
+containerd_cri_socket: "/var/run/containerd/containerd.sock"
