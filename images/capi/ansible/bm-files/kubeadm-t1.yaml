@@ -1,0 +1,53 @@
+---
+apiServer:
+  certSANs:
+  - tenant1.refsa2.bn.das-schiff.telekom.de
+  extraArgs:
+    cloud-provider: external
+    oidc-client-id: kubernetes
+    oidc-groups-claim: groups
+    oidc-issuer-url: https://keycloak.das-schiff.telekom.de/auth/realms/schiff
+    oidc-username-claim: email
+    profiling: "false"
+    tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  extraVolumes:
+  - hostPath: /var/log/kube-apiserver
+    mountPath: /var/log/kube-apiserver
+    name: audit-logs
+apiVersion: kubeadm.k8s.io/v1beta1
+clusterName: schiffbm-1
+controlPlaneEndpoint: 10.23.143.2:6443
+controllerManager:
+  extraArgs:
+    cloud-provider: external
+    profiling: "false"
+    terminated-pod-gc-threshold: "10"
+    tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+dns: {}
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+    extraArgs:
+      cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+kind: ClusterConfiguration
+kubernetesVersion: v1.20.0
+networking:
+  podSubnet: 192.168.0.0/16
+scheduler:
+  extraArgs:
+    profiling: "false"
+    tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+
+---
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: ""
+  bindPort: 0
+nodeRegistration:
+  criSocket: /var/run/containerd/containerd.sock
+  kubeletExtraArgs:
+    cloud-provider: external
+    container-log-max-files: "5"
+    container-log-max-size: 10Mi
+    tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256

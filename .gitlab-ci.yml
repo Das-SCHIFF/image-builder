@@ -57,7 +57,7 @@ docker-build-image:
   when: manual
   needs: []
 
-build-ubuntu-18.04-1.19.4:
+build-ubuntu-18.04-1.19.6:
   when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
@@ -73,13 +73,13 @@ build-ubuntu-18.04-1.19.4:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     when: always
     paths:
       - ./**/packer.log
 
-build-ubuntu-20.04-1.19.4:
+build-ubuntu-18.04-1.20.1:
   when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
@@ -95,13 +95,35 @@ build-ubuntu-20.04-1.19.4:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.1.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-ubuntu-18.04-1.19.4:
+build-ubuntu-20.04-1.19.6:
+  when: manual
+  variables:
+    PACKER_LOG_PATH: "packer.log"
+    PACKER_LOG: "1"
+  tags: 
+    - docker
+    - JOS-2011
+  image: 
+    name: registry.devops.telekom.de/t-dci-image-building/schiff-image-builder:latest
+    entrypoint: [""]
+  stage: build
+  script:
+    - env
+    - cd images/capi/
+    - make deps-ova
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+  artifacts:
+    when: always
+    paths:
+      - ./**/packer.log
+
+packer-build-ubuntu-18.04-1.19.6:
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -116,13 +138,13 @@ packer-build-ubuntu-18.04-1.19.4:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-ubuntu-20.04-1.19.4:
+packer-build-ubuntu-20.04-1.19.6:
   when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
@@ -138,13 +160,34 @@ packer-build-ubuntu-20.04-1.19.4:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-centos-7-1.19.4:
+packer-build-ubuntu-18.04-1.20.1:
+  variables:
+    PACKER_LOG_PATH: "packer.log"
+    PACKER_LOG: "1"
+  tags: 
+    - docker
+    - packet
+  image: 
+    name: registry.devops.telekom.de/t-dci-image-building/schiff-image-builder:latest
+    entrypoint: [""]
+  stage: build
+  script:
+    - env
+    - cd images/capi/
+    - make deps-ova
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.1.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+  artifacts:
+    when: always
+    paths:
+      - ./**/packer.log
+
+packer-build-ubuntu-20.04-1.20.1:
   when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
@@ -160,7 +203,29 @@ packer-build-centos-7-1.19.4:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.4.json " make build-node-ova-vsphere-centos-7
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.1.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+  artifacts:
+    when: always
+    paths:
+      - ./**/packer.log
+
+packer-build-centos-7-1.19.6:
+  when: manual
+  variables:
+    PACKER_LOG_PATH: "packer.log"
+    PACKER_LOG: "1"
+  tags: 
+    - docker
+    - packet
+  image: 
+    name: registry.devops.telekom.de/t-dci-image-building/schiff-image-builder:latest
+    entrypoint: [""]
+  stage: build
+  script:
+    - env
+    - cd images/capi/
+    - make deps-ova
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json " make build-node-ova-vsphere-centos-7
   artifacts:
     when: always
     paths:
