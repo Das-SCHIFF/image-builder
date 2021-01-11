@@ -4,16 +4,22 @@ stages:
   - build
   - test
   - build-image
+  - distribute
 
 
 yamllint:
+  rules:
+    - when: always
+      allow_failure: true
   stage: linting
   image: pipelinecomponents/yamllint:latest
   script:
     - yamllint .
-  allow_failure: true
 
 shelllint:
+  rules:
+    - when: always
+      allow_failure: true
   stage: linting
   image: koalaman/shellcheck-alpine:latest
   before_script:
@@ -21,18 +27,22 @@ shelllint:
     - apk add git
   script:
     - git ls-files --exclude='*.sh' --ignored | xargs shellcheck
-  allow_failure: true
 
 jsonlint:
+  rules:
+    - when: always
+      allow_failure: true
   stage: linting
   image: pipelinecomponents/jsonlint:latest
   script:
     - |
       find . -not -path './.git/*' -name '*.json' -type f -print0 |
       parallel --will-cite -k -0 -n1 jsonlint -q
-  allow_failure: true
 
 ansibleLint:
+  rules:
+    - when: always
+      allow_failure: true
   image: georgiapipeline/georgia-pipeline-ansible-slim
   stage: linting
   before_script:
@@ -40,7 +50,6 @@ ansibleLint:
     - ansible-lint --version
   script:
     - ansible-lint -x 703,701 images/capi/ansible/node.yml images/capi/ansible/haproxy.yml
-  allow_failure: true
 
 docker-build-image:
   # Official docker image.
@@ -54,11 +63,17 @@ docker-build-image:
     - docker build --pull -t "$CI_REGISTRY_IMAGE"  . --build-arg https_proxy=http://proxy.devops.telekom.de:3128 --build-arg http_proxy=http://proxy.devops.telekom.de:3128
     - docker push "$CI_REGISTRY_IMAGE"
     - docker save "$CI_REGISTRY_IMAGE" -o "$CI_PROJECT_TITLE".tar.gz
-  when: manual
+  rules:
+    - when: manual
   needs: []
 
-build-ubuntu-18.04-1.19.6:
-  when: manual
+ubuntu-18.04-1.19.6-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -75,12 +90,19 @@ build-ubuntu-18.04-1.19.6:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-build-ubuntu-18.04-1.20.1:
-  when: manual
+ubuntu-18.04-1.20.1-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -97,12 +119,19 @@ build-ubuntu-18.04-1.20.1:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.1.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-build-ubuntu-20.04-1.19.6:
-  when: manual
+ubuntu-20.04-1.19.6-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -119,11 +148,19 @@ build-ubuntu-20.04-1.19.6:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-ubuntu-18.04-1.19.6:
+packet-ubuntu-18.04-1.19.6-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -140,12 +177,19 @@ packer-build-ubuntu-18.04-1.19.6:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-ubuntu-20.04-1.19.6:
-  when: manual
+packet-ubuntu-20.04-1.19.6-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -162,11 +206,19 @@ packer-build-ubuntu-20.04-1.19.6:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-ubuntu-18.04-1.20.1:
+packet-ubuntu-18.04-1.20.1-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -182,14 +234,22 @@ packer-build-ubuntu-18.04-1.20.1:
     - cd images/capi/
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.1.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
-    - ls output
-  artifacts:
+    - ls -al output
+    - cat ../../build.env
+  artifacts:    
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-ubuntu-20.04-1.20.1:
-  when: manual
+packet-ubuntu-20.04-1.20.1-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -206,12 +266,19 @@ packer-build-ubuntu-20.04-1.20.1:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.1.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
 
-packer-build-centos-7-1.19.6:
-  when: manual
+packet-centos-7-1.19.6-build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
   variables:
     PACKER_LOG_PATH: "packer.log"
     PACKER_LOG: "1"
@@ -228,6 +295,24 @@ packer-build-centos-7-1.19.6:
     - make deps-ova
     - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.19.6.json " make build-node-ova-vsphere-centos-7
   artifacts:
+    reports:
+      dotenv: build.env
     when: always
     paths:
       - ./**/packer.log
+
+distribute-images:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: manual
+    - when: manual
+  tags: 
+    - docker
+    - packet
+  image: 
+    name: registry.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
+    entrypoint: [""]
+  stage: distribute
+  script:
+    - bw config server https://bitwarden.das-schiff.telekom.de
+    - bw login
