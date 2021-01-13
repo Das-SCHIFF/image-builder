@@ -308,11 +308,11 @@ distribute-images:
     - when: manual
   tags: 
     - docker
-    - packet
+    - JOS-2011
   image: 
     name: registry.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
     entrypoint: [""]
   stage: distribute
   script:
     - bw config server https://bitwarden.das-schiff.telekom.de
-    - bw login
+    - bw login  $bw_user $bw_pass
