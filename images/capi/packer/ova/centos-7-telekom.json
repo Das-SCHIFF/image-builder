@@ -1,5 +1,5 @@
 {
-  "build_name": "centos-7",
+  "build_name": "centos-7-{{isotime \"2006-01-02T15-04z\"}}",
   "distro_name": "centos",
   "os_display_name": "CentOS 7",
   "guest_os_type": "centos7-64",
@@ -9,5 +9,13 @@
   "iso_checksum_type": "sha256",
   "boot_command_prefix": "<tab> text ks=",
   "boot_command_suffix": "/7/ks-telekom.cfg<enter><wait>",
-  "shutdown_command": "sys-unconfig"
+  "shutdown_command": "sys-unconfig",
+  "custom_role": "true",
+  "custom_role_name": "telekom-dependencies",
+  "custom_post_processor": "true",
+  "artifactory_user": "{{env `artifactory_user`}}",
+  "artifactory_key": "{{env `artifactory_key`}}",
+  "CI_COMMIT_REF_SLUG": "{{env `CI_COMMIT_REF_SLUG`}}",
+  "custom_post_processor_command" : "curl -u {{user `artifactory_user`}}:{{user `artifactory_key`}} -T output/{{user `build_version`}}/{{user `build_version`}}.ova \"https://artifactory.devops.telekom.de/artifactory/schiff-generic/ovas/centos/{{user `build_version`}}.ova;CI_COMMIT_REF_SLUG={{user `CI_COMMIT_REF_SLUG`}};os_display_name={{user `os_display_name` | replace_all \" \" \"-\" }};KUBERNETES_VERSION={{user `kubernetes_semver`}};CONTAINERD_VERSION={{user `containerd_version`}}\" && echo \"BUILD_VERSION={{user `build_version`}}\nKUBERNETES_VERSION={{user `kubernetes_semver`}}\nCONTAINERD_VERSION={{user `containerd_version`}}\" >> \"../../build.env\""
+
 }
