@@ -302,6 +302,7 @@ packet-centos-7-1.19.6-build:
       - ./**/packer.log
 
 distribute-images:
+  needs: []
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: manual
