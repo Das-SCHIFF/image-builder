@@ -315,5 +315,4 @@ distribute-images:
     entrypoint: [""]
   stage: distribute
   script:
-    - bw config server https://bitwarden.das-schiff.telekom.de
-    - bw login  $bw_user $bw_pass
+    - python3 .bin/deploy.py
