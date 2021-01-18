@@ -315,4 +315,4 @@ distribute-images:
     entrypoint: [""]
   stage: distribute
   script:
-    - python3 .bin/deploy.py
+    - python3 .bin/deploy.py --vcenter_config_file $vcenter_creds
