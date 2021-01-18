@@ -1,0 +1,23 @@
+vcenters:
+  - url: "vcenter1.sce-dcn.net"
+    user: dummy
+    pw: dummy
+    template: true
+    snapshot: true
+    datacenter: ""
+    datastore: ""
+    cluster: ""
+    storagePolicy: ""
+    folder: ""
+    resource_pool: ""
+  - url: "vcenter2.sce-dcn.net"
+    user: dummy
+    pw: dummy
+    template: true
+    snapshot: true
+    datacenter: ""
+    datastore: ""
+    cluster: ""
+    storagePolicy: ""
+    folder: ""
+    resource_pool: ""
