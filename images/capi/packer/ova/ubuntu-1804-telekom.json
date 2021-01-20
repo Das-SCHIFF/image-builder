@@ -11,7 +11,7 @@
   "boot_command_suffix": "/18.04-telekom/preseed.cfg -- <wait><enter><wait>",
   "shutdown_command": "shutdown -P now",
   "custom_role": "true",
-  "custom_role_name": "telekom-dependencies",
+  "custom_role_names": "telekom_dependencies",
   "custom_post_processor": "true",
   "artifactory_user": "{{env `artifactory_user`}}",
   "artifactory_key": "{{env `artifactory_key`}}",
