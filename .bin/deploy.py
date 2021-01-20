@@ -115,7 +115,7 @@ def main():
             try:
                 uploadOVA(vcenter,p["name"])
             except:
-                print("Upload for vCenter"+vcenter["host"]+"failed")
+                print("Upload for vCenter "+vcenter["host"]+" failed")
 
 def uploadOVA(vcenter_data, ova_path):
     try:
@@ -341,7 +341,6 @@ class OvfHandler(object):
         print(fileItem)
         for deviceUrl in lease.info.deviceUrl:
             if deviceUrl.importKey == fileItem.deviceId:
-                print(deviceUrl)
                 return deviceUrl
         raise Exception("Failed to find deviceUrl for file %s" % fileItem.path)
 

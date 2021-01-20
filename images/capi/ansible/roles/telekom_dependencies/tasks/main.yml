@@ -21,9 +21,11 @@
 
 - name: Copy in templates
   template:
-    dest: "/{{ item }}"
     src: "{{ item }}.j2"
-    mode: 0755
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
   loop:
     - etc/containerd/config.toml
 
