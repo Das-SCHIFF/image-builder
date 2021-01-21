@@ -8,6 +8,7 @@ import ssl
 import functools
 import time
 import tarfile
+import hashlib
 from collections import OrderedDict
 from tqdm.auto import tqdm
 from tqdm.utils import CallbackIOWrapper
@@ -34,6 +35,7 @@ def main():
     parser.add_argument('--enable_bw', default=False )
     parser.add_argument('--vcenter_config_file', type=argparse.FileType('r'), nargs="?", default=".bin/dummy.yaml")
     exit = False
+    error_occured=True
     args = parser.parse_args()
     vcenter_data = yaml.load(args.vcenter_config_file, Loader=yaml.FullLoader)
     if args.artifactory_user is None and args.artifactory_key is not None:
@@ -102,21 +104,25 @@ def main():
     for p in artifacts:
 
         fileurl= args.artifactory_url + "/" + p["repo"] + "/" + p["path"] + "/" +p["name"]
-        
-        path = ArtifactoryPath(fileurl,session=ses)
-        with path.open() as fd:
-            # out.write(fd.read())
-            # pbar.update(1) 
-            chunkr = functools.partial(fd.read,4096)
-            with tqdm.wrapattr(open(p["name"], "wb"), "write", miniters=1, desc=p["name"],total=int(p["size"])) as fout:
-                for chunk in iter(chunkr,b""):
-                    fout.write(chunk)
+        if not os.path.isfile(p["name"]):    
+            path = ArtifactoryPath(fileurl,session=ses)
+            with path.open() as fd:
+                # out.write(fd.read())
+                # pbar.update(1) 
+                chunkr = functools.partial(fd.read,4096)
+                with tqdm.wrapattr(open(p["name"], "wb"), "write", miniters=1, desc=p["name"],total=int(p["size"])) as fout:
+                    for chunk in iter(chunkr,b""):
+                        fout.write(chunk)
         for vcenter in vcenter_data["vcenters"]:
             try:
                 uploadOVA(vcenter,p["name"])
-            except:
+            except Exception as e:
                 print("Upload for vCenter "+vcenter["host"]+" failed")
-
+                print("Reason:")
+                print(e)
+                error_occured=True
+    if error_occured:
+        return 1
 def uploadOVA(vcenter_data, ova_path):
     try:
         si = SmartConnectNoSSL(host=vcenter_data["host"],
@@ -125,8 +131,10 @@ def uploadOVA(vcenter_data, ova_path):
                                port=443)
         atexit.register(Disconnect, si)
         print("Connected to to %s" % vcenter_data["host"])
-    except:
+    except Exception as e:
         print("Unable to connect to %s" % vcenter_data["host"])
+        print("Reason:")
+        print(e)
         return 1
     content = si.RetrieveContent()
     
