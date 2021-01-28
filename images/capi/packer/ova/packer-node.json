@@ -185,9 +185,10 @@
       "disk_controller_type": "{{user `disk_controller_type`}}",
       "guest_os_type": "{{user `vsphere_guest_os_type`}}",
       "boot_wait": "{{user `boot_wait`}}",
-      "floppy_dirs": [
+      "cd_files": [
         "./packer/ova/linux/{{user `distro_name`}}/http/"
       ],
+      "cd_label": "cidata",
       "iso_urls": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
       "communicator": "ssh",
@@ -240,9 +241,10 @@
       "disk_controller_type": "{{user `disk_controller_type`}}",
       "guest_os_type": "{{user `vsphere_guest_os_type`}}",
       "boot_wait": "{{user `boot_wait`}}",
-      "floppy_dirs": [
+      "cd_files": [
         "./packer/ova/linux/{{user `distro_name`}}/http/"
       ],
+      "cd_label": "cidata",
       "iso_urls": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
       "communicator": "ssh",
