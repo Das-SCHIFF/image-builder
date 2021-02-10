@@ -95,10 +95,10 @@ ubuntu-18.04-1.19.6-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 ubuntu-18.04-1.20.2-build:
   rules:
@@ -128,10 +128,10 @@ ubuntu-18.04-1.20.2-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 ubuntu-20.04-1.19.6-build:
   rules:
@@ -161,10 +161,10 @@ ubuntu-20.04-1.19.6-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 packet-ubuntu-18.04-1.19.6-build:
   rules:
@@ -194,10 +194,10 @@ packet-ubuntu-18.04-1.19.6-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 packet-ubuntu-20.04-1.19.6-build:
   rules:
@@ -227,10 +227,10 @@ packet-ubuntu-20.04-1.19.6-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 packet-ubuntu-18.04-1.20.2-build:
   rules:
@@ -262,10 +262,10 @@ packet-ubuntu-18.04-1.20.2-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 packet-ubuntu-20.04-1.20.2-build:
   rules:
@@ -295,10 +295,10 @@ packet-ubuntu-20.04-1.20.2-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 packet-centos-7-1.19.6-build:
   rules:
@@ -328,10 +328,10 @@ packet-centos-7-1.19.6-build:
     when: always
     paths:
       - ./**/packer.log
-      - aptlist.yml
-      - yumlist.yml
-      - ansible_facts.yml
-      - packer_builder_type.yml
+      - ./**/aptlist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
 
 distribute-images:
   needs: []
