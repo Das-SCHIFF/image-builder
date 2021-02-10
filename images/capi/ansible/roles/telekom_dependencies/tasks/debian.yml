@@ -24,8 +24,9 @@
   package_facts:
     manager: apt
 
-- name: Print the package facts
-  debug:
-    var: ansible_facts.packages
-
+- name: Save package Facts to file
+  local_action:
+    module: copy
+    content: "{{ ansible_facts.packages |to_nice_yaml }}"
+    dest: "aptlist.yml"
 

@@ -1,11 +1,15 @@
 ---
-- name: Print packer_builder_type
-  debug:
-    var: packer_builder_type
+- name: Save packer_builder_type to file
+  local_action:
+    module: copy
+    content: "{{ packer_builder_type |to_nice_yaml }}"
+    dest: "packer_builder_type.yml"
 
-- name: Print facts
-  debug:
-    var: ansible_facts
+- name: Save Facts to file
+  local_action:
+    module: copy
+    content: "{{ ansible_facts |to_nice_yaml }}"
+    dest: "ansible_facts.yml"
 
 - name: Copy scripts
   copy:
