@@ -47,11 +47,6 @@
 - import_tasks: photon.yml
   when: ansible_os_family == "VMware Photon OS"
 
-- name: Include TasteOS-Role
-  include_role:
-    name: tos-client
-  when: use_tasteos
-
 - name: Include SSH-Hardening-Role
   include_role:
     name: dev-sec.ssh-hardening
@@ -81,3 +76,34 @@
      - "ecdsa-sha2-nistp256"
     ssh_server_password_login: true
     ssh_client_hardening: false
+
+- name: Copy tasteOS
+  copy:
+    dest: "/{{ item }}"
+    src: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - tmp/collect.sh
+
+- name: Run TasteOS collector
+  ansible.builtin.command: ./collect.sh
+  args:
+    chdir: "/tmp"
+  register: tasteos_results
+
+- name: remove TasteOS Files
+  file:
+    state: absent
+    path: "{{ item }}"
+  loop:
+  - /tmp/collect.sh
+  - /tmp/collector-err-temp
+  - /tmp/collector-out-temp
+
+- name: Save TasteOS Output to file
+  local_action:
+    module: copy
+    content: "{{ tasteos_results.stdout  }}"
+    dest: "results.txt"
