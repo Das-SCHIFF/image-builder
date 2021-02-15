@@ -2,33 +2,32 @@
 ssh_hardening: false
 
 telekom_rpms:
- - nfs-utils
+  - nfs-utils
+  - ipvsadm
 
 telekom_debs:
- - nfs-common
- - python-apt
+  - nfs-common
+  - python-apt
+  - ipvsadm
 
 telekom_photon_rpms:
- - nfs-utils
-
+  - nfs-utils
+  - ipvsadm
 
 telekom_remove_rpms:
- - telnet
- - rsync
- - socat
- - tcpdump
- - build-essentials
+  - telnet
+  - rsync
+  - socat
+  - tcpdump
+  - build-essentials
 
 telekom_remove_debs:
- - hyperv-daemons
-
-
+  - hyperv-daemons
 
 telekom_remove_photon_rpms:
 
-
 telekom_disable_systemd_services:
- - hv-kvp-daemon.service
+  - hv-kvp-daemon.service
 
 telekom_registry_mirrors:
   harbor:
@@ -36,7 +35,6 @@ telekom_registry_mirrors:
     - harbor.sce-dcn.net
   artifactory:
     - artifactory.devops.telekom.de
-
 
 telekom_containerd_registry_mirrors:
   - name: docker.io
