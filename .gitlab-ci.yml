@@ -102,7 +102,7 @@ ubuntu-18.04-1.19.8-build:
       - ./**/results.txt
       - ./**/result.txt
 
-ubuntu-18.04-1.20.3-build:
+ubuntu-18.04-1.20.4-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -123,7 +123,7 @@ ubuntu-18.04-1.20.3-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.3.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -242,7 +242,7 @@ packet-ubuntu-20.04-1.19.8-build:
       - ./**/results.txt
       - ./**/result.txt
 
-packet-ubuntu-18.04-1.20.3-build:
+packet-ubuntu-18.04-1.20.4-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: always
@@ -263,7 +263,7 @@ packet-ubuntu-18.04-1.20.3-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.3.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
     - ls -al output
     - cat ../../build.env
   artifacts:    
@@ -279,7 +279,7 @@ packet-ubuntu-18.04-1.20.3-build:
       - ./**/results.txt
       - ./**/result.txt
 
-packet-ubuntu-20.04-1.20.3-build:
+packet-ubuntu-20.04-1.20.4-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -300,7 +300,7 @@ packet-ubuntu-20.04-1.20.3-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.3.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.3.json packer/config/kubernetes-v1.20.4.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
