@@ -101,6 +101,7 @@ ubuntu-18.04-1.19.8-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 ubuntu-18.04-1.20.4-build:
   rules:
@@ -136,6 +137,7 @@ ubuntu-18.04-1.20.4-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 ubuntu-20.04-1.19.8-build:
   rules:
@@ -171,6 +173,7 @@ ubuntu-20.04-1.19.8-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 packet-ubuntu-18.04-1.19.8-build:
   rules:
@@ -206,6 +209,7 @@ packet-ubuntu-18.04-1.19.8-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 packet-ubuntu-20.04-1.19.8-build:
   rules:
@@ -241,6 +245,7 @@ packet-ubuntu-20.04-1.19.8-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 packet-ubuntu-18.04-1.20.4-build:
   rules:
@@ -278,6 +283,7 @@ packet-ubuntu-18.04-1.20.4-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 packet-ubuntu-20.04-1.20.4-build:
   rules:
@@ -313,6 +319,7 @@ packet-ubuntu-20.04-1.20.4-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 packet-centos-7-1.19.8-build:
   rules:
@@ -348,6 +355,7 @@ packet-centos-7-1.19.8-build:
       - ./**/packer_builder_type.yml
       - ./**/results.txt
       - ./**/result.txt
+      - ./**/*.ovf
 
 distribute-images:
   needs: []
