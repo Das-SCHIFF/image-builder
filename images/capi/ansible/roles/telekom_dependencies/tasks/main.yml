@@ -5,6 +5,15 @@
     content: "{{ packer_builder_type |to_nice_yaml }}"
     dest: "packer_builder_type.yml"
 
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Populate general facts
+  ansible.builtin.gather_facts:
+
+- name: Populate package facts
+  ansible.builtin.package_facts:
+
 - name: Save Facts to file
   local_action:
     module: copy
