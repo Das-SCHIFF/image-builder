@@ -43,8 +43,9 @@
 - name: Make sure systemd-timesyncd isnt running and enabled
   ansible.builtin.service:
     name: systemd-timesyncd
-    state: started
+    state: stopped
     enabled: no
+    masked: yes
 
 - name: Copy scripts
   copy:
