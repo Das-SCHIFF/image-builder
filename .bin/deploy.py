@@ -125,6 +125,7 @@ def main():
                     print(e)
                     error_occured=True
             elif args.upload_mode == "govc":
+                print(vcenter["host"])
                 os.environ['GOVC_INSECURE'] = "1"
                 os.environ['GOVC_URL'] = vcenter["host"]
                 os.environ['GOVC_USERNAME'] = vcenter["user"]
@@ -139,14 +140,14 @@ def main():
                 output = process.stdout
                 importoptions = json.loads(output)
                 importoptions["NetworkMapping"][0]["Network"] = vcenter["network"]
-                with open(p["name"]+"json", 'w') as outfile:
+                with open(p["name"]+".json", 'w') as outfile:
                     json.dump(importoptions, outfile)
-                print(vcenter["host"])
                 try:
-                    process = subprocess.run(["govc","import.ova","--options="+p["name"]+"json",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                    process = subprocess.run(["govc","import.ova","--options="+p["name"]+".json",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                     output = process.stdout
                     print(output)
                 except subprocess.CalledProcessError as err:
+                    print(["govc","import.ova","--options="+p["name"]+".json",p["name"]])
                     print(err.output)
     if error_occured:
         return 1
