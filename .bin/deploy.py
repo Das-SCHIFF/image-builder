@@ -129,6 +129,8 @@ def main():
                 os.environ['GOVC_URL'] = vcenter["host"]
                 os.environ['GOVC_USERNAME'] = vcenter["user"]
                 os.environ['GOVC_PASSWORD'] = vcenter["password"]
+                os.environ['GOVC_DATACENTER'] = vcenter["datacenter"]
+                os.environ['GOVC_CLUSTER'] = vcenter["cluster"]
                 os.environ['GOVC_DATASTORE'] = vcenter["datastore"]
                 os.environ['GOVC_NETWORK'] = vcenter["network"]
                 os.environ['GOVC_FOLDER'] = vcenter["folder"]
@@ -137,6 +139,7 @@ def main():
                 output = process.stdout
                 importoptions = json.loads(output)
                 print(output)
+                importoptions["NetworkMapping"][0]["Network"] = vcenter["network"]
                 print(importoptions)
                 print(importoptions["NetworkMapping"])
                 print(importoptions["NetworkMapping"][0])
@@ -144,7 +147,8 @@ def main():
                 with open(p["name"]+"json", 'w') as outfile:
                     json.dump(importoptions, outfile)
                 try:
-                    process = subprocess.run(["govc","import.ova",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                    print(vcenter["host"])
+                    process = subprocess.run(["govc","import.ova","--options="+p["name"]+"json",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                     output = process.stdout
                     print(output)
                 except subprocess.CalledProcessError as err:
