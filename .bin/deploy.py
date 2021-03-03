@@ -138,16 +138,11 @@ def main():
                 process = subprocess.run(["govc","import.spec",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                 output = process.stdout
                 importoptions = json.loads(output)
-                print(output)
                 importoptions["NetworkMapping"][0]["Network"] = vcenter["network"]
-                print(importoptions)
-                print(importoptions["NetworkMapping"])
-                print(importoptions["NetworkMapping"][0])
-                print(importoptions["NetworkMapping"][0]["Network"])
                 with open(p["name"]+"json", 'w') as outfile:
                     json.dump(importoptions, outfile)
+                print(vcenter["host"])
                 try:
-                    print(vcenter["host"])
                     process = subprocess.run(["govc","import.ova","--options="+p["name"]+"json",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                     output = process.stdout
                     print(output)
