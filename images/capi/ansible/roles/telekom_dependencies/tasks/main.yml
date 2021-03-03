@@ -20,6 +20,26 @@
     content: "{{ ansible_facts |to_nice_yaml }}"
     dest: "ansible_facts.yml"
 
+- name: Configure NTP Servers
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    create: yes
+    line: "{{ item }}"
+  loop:
+    - "server 10.90.221.13 iburst"
+    - "server 10.90.221.29 iburst"
+    - "server 10.90.221.45 iburst"
+    - "server 10.90.221.61 iburst"
+    - "server 10.90.221.77 iburst"
+    - "server 172.22.13.10 iburst"
+    - "server 172.22.13.11 iburst"
+    - "server 172.22.13.12 iburst"
+    - "server 172.22.13.13 iburst"
+    - "server 172.22.13.14 iburst"
+    - "server 10.90.24.18 iburst"
+    - "server 10.90.24.2 iburst"
+    
+
 - name: Copy scripts
   copy:
     dest: "/{{ item }}"

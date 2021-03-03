@@ -9,6 +9,7 @@ telekom_debs:
   - nfs-common
   - python-apt
   - ipvsadm
+  - vim
 
 telekom_photon_rpms:
   - nfs-utils
