@@ -141,6 +141,8 @@ def main():
                 print(importoptions["NetworkMapping"])
                 print(importoptions["NetworkMapping"][0])
                 print(importoptions["NetworkMapping"][0]["Network"])
+                with open(p["name"]+"json", 'w') as outfile:
+                    json.dump(importoptions, outfile)
                 try:
                     process = subprocess.run(["govc","import.ova",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                     output = process.stdout
