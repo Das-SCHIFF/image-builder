@@ -125,7 +125,7 @@ def main():
                     print(e)
                     error_occured=True
             elif args.upload_mode == "govc":
-                print(vcenter["host"])
+                print("vCenter: "+vcenter["host"])
                 os.environ['GOVC_INSECURE'] = "1"
                 os.environ['GOVC_URL'] = vcenter["host"]
                 os.environ['GOVC_USERNAME'] = vcenter["user"]
@@ -136,17 +136,20 @@ def main():
                 os.environ['GOVC_NETWORK'] = vcenter["network"]
                 os.environ['GOVC_FOLDER'] = vcenter["folder"]
                 os.environ['GOVC_RESOURCE_POOL'] = vcenter["resource_pool"]
-                process = subprocess.run(["govc","import.spec",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                print(["govc","import.spec",p["name"]])
+                process = subprocess.run(["govc","import.spec",p["name"]],check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
                 output = process.stdout
                 importoptions = json.loads(output)
                 importoptions["NetworkMapping"][0]["Network"] = vcenter["network"]
                 with open(p["name"]+".json", 'w') as outfile:
                     json.dump(importoptions, outfile)
                 try:
-                    process = subprocess.run(["govc","import.ova","--options="+p["name"]+".json",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                    print(["govc","import.ova","--options="+p["name"]+".json",p["name"]])
+                    process = subprocess.run(["govc","import.ova","--options="+p["name"]+".json",p["name"]],check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
                     output = process.stdout
                     print(output)
                 except subprocess.CalledProcessError as err:
+                    print("vCenter: "+vcenter["host"]+" failed")
                     print(["govc","import.ova","--options="+p["name"]+".json",p["name"]])
                     print(err.output)
     if error_occured:
