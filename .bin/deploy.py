@@ -7,6 +7,7 @@ import requests
 import ssl
 import functools
 import time
+import json
 import tarfile
 import hashlib
 from collections import OrderedDict
@@ -134,10 +135,18 @@ def main():
                 os.environ['GOVC_RESOURCE_POOL'] = vcenter["resource_pool"]
                 process = subprocess.run(["govc","import.spec",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                 output = process.stdout
+                importoptions = json.load(output)
                 print(output)
-                process = subprocess.run(["govc","import.ova",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
-                output = process.stdout
-                print(output)
+                print(importoptions)
+                print(importoptions["NetworkMapping"])
+                print(importoptions["NetworkMapping"][0])
+                print(importoptions["NetworkMapping"][0]["Network"])
+                try:
+                    process = subprocess.run(["govc","import.ova",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                    output = process.stdout
+                    print(output)
+                except subprocess.CalledProcessError as err:
+                    print(err.output)
     if error_occured:
         return 1
 def uploadOVA(vcenter_data, ova_path):
