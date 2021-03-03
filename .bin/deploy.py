@@ -29,6 +29,7 @@ def main():
     parser.add_argument('--artifactory_pass', default=os.getenv('artifactory_pass') )
     parser.add_argument('--artifactory_url', default=os.getenv('artifactory_url',"https://artifactory.devops.telekom.de/artifactory") )
     parser.add_argument('--artifactory_repo', default=os.getenv('artifactory_repo',"schiff-generic") )
+    parser.add_argument('--upload_mode', default=os.getenv('upload_mode',"govc") )
     parser.add_argument('--bw_user', default=os.getenv('bw_user') )
     parser.add_argument('--bw_pass', default=os.getenv('bw_pass') )
     parser.add_argument('--bw_url', default=os.getenv('bw_url', "https://bitwarden.das-schiff.telekom.de") )
@@ -114,13 +115,29 @@ def main():
                     for chunk in iter(chunkr,b""):
                         fout.write(chunk)
         for vcenter in vcenter_data["vcenters"]:
-            try:
-                uploadOVA(vcenter,p["name"])
-            except Exception as e:
-                print("Upload for vCenter "+vcenter["host"]+" failed")
-                print("Reason:")
-                print(e)
-                error_occured=True
+            if args.upload_mode == "python":
+                try:
+                    uploadOVA(vcenter,p["name"])
+                except Exception as e:
+                    print("Upload for vCenter "+vcenter["host"]+" failed")
+                    print("Reason:")
+                    print(e)
+                    error_occured=True
+            elif args.upload_mode == "govc":
+                os.environ['GOVC_INSECURE'] = 1
+                os.environ['GOVC_URL'] = vcenter["host"]
+                os.environ['GOVC_USERNAME'] = vcenter["user"]
+                os.environ['GOVC_PASSWORD'] = vcenter["password"]
+                os.environ['GOVC_DATASTORE'] = vcenter["datastore"]
+                os.environ['GOVC_NETWORK'] = vcenter["network"]
+                os.environ['GOVC_FOLDER'] = vcenter["folder"]
+                os.environ['GOVC_RESOURCE_POOL'] = vcenter["resource_pool"]
+                process = subprocess.run(["govc","import.spec",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                output = process.stdout
+                print(output)
+                process = subprocess.run(["govc","import.ova",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                output = process.stdout
+                print(output)
     if error_occured:
         return 1
 def uploadOVA(vcenter_data, ova_path):
