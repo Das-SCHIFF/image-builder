@@ -38,7 +38,13 @@
     - "server 172.22.13.14 iburst"
     - "server 10.90.24.18 iburst"
     - "server 10.90.24.2 iburst"
-    
+    - "server 10.108.144.33 iburst"
+
+- name: Make sure systemd-timesyncd isnt running and enabled
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    state: started
+    enabled: no
 
 - name: Copy scripts
   copy:
