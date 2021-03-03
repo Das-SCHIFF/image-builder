@@ -124,7 +124,7 @@ def main():
                     print(e)
                     error_occured=True
             elif args.upload_mode == "govc":
-                os.environ['GOVC_INSECURE'] = 1
+                os.environ['GOVC_INSECURE'] = "1"
                 os.environ['GOVC_URL'] = vcenter["host"]
                 os.environ['GOVC_USERNAME'] = vcenter["user"]
                 os.environ['GOVC_PASSWORD'] = vcenter["password"]
