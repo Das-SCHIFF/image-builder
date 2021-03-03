@@ -115,7 +115,6 @@ def main():
                 with tqdm.wrapattr(open(p["name"], "wb"), "write", miniters=1, desc=p["name"],total=int(p["size"])) as fout:
                     for chunk in iter(chunkr,b""):
                         fout.write(chunk)
-        time.sleep(10)
         for vcenter in vcenter_data["vcenters"]:
             if args.upload_mode == "python":
                 try:
@@ -154,7 +153,8 @@ def main():
                     print("vCenter: "+vcenter["host"]+" failed")
                     print(["govc","import.ova","--options="+p["name"]+".json",p["name"]])
                     print(err.output)
-                time.sleep(5)
+                    if "file does not exist" in err.output:
+                        print(os.listdir())
     if error_occured:
         return 1
 def uploadOVA(vcenter_data, ova_path):
