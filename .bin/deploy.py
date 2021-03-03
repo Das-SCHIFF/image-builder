@@ -135,7 +135,7 @@ def main():
                 os.environ['GOVC_RESOURCE_POOL'] = vcenter["resource_pool"]
                 process = subprocess.run(["govc","import.spec",p["name"]],check=True, stdout=subprocess.PIPE, universal_newlines=True)
                 output = process.stdout
-                importoptions = json.load(output)
+                importoptions = json.loads(output)
                 print(output)
                 print(importoptions)
                 print(importoptions["NetworkMapping"])
