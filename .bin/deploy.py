@@ -128,6 +128,7 @@ def main():
             elif args.upload_mode == "govc":
                 print("vCenter: "+vcenter["host"])
                 os.environ['GOVC_INSECURE'] = "1"
+                os.environ['GOVC_DEBUG'] = "1"
                 os.environ['GOVC_URL'] = vcenter["host"]
                 os.environ['GOVC_USERNAME'] = vcenter["user"]
                 os.environ['GOVC_PASSWORD'] = vcenter["password"]
