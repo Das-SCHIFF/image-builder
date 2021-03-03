@@ -96,6 +96,8 @@
       "ssh_timeout": "4h",
       "http_directory": "{{ user `http_directory`}}",
       "floppy_dirs": "{{ user `floppy_dirs`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "boot_command": [
         "{{user `boot_command_prefix`}}",
         "{{user `boot_media_path`}}",
@@ -142,6 +144,8 @@
       "ssh_timeout": "4h",
       "http_directory": "{{ user `http_directory`}}",
       "floppy_dirs": "{{ user `floppy_dirs`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "boot_command": [
         "{{user `boot_command_prefix`}}",
         "{{user `boot_media_path`}}",
@@ -208,6 +212,8 @@
       ],
       "http_directory": "{{ user `http_directory`}}",
       "floppy_dirs": "{{ user `floppy_dirs`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "boot_command": [
         "{{user `boot_command_prefix`}}",
         "{{user `boot_media_path`}}",
@@ -263,6 +269,8 @@
       ],
       "http_directory": "{{ user `http_directory`}}",
       "floppy_dirs": "{{ user `floppy_dirs`}}",
+      "cd_files": "{{ user `cd_dirs`}}",
+      "cd_label": "cidata",
       "boot_command": [
         "{{user `boot_command_prefix`}}",
         "{{user `boot_media_path`}}",
