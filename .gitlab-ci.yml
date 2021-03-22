@@ -67,7 +67,7 @@ docker-build-image:
     - when: manual
   needs: []
 
-ubuntu-18.04-1.19.8-build:
+ubuntu-18.04-1.19.9-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -88,7 +88,7 @@ ubuntu-18.04-1.19.8-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.8.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.9.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -103,7 +103,7 @@ ubuntu-18.04-1.19.8-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-ubuntu-18.04-1.20.4-build:
+ubuntu-18.04-1.20.5-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -124,7 +124,7 @@ ubuntu-18.04-1.20.4-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.20.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.20.5.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -139,7 +139,7 @@ ubuntu-18.04-1.20.4-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-ubuntu-20.04-1.19.8-build:
+ubuntu-20.04-1.19.9-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -160,7 +160,7 @@ ubuntu-20.04-1.19.8-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.8.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_reftmdc packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.9.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -175,7 +175,7 @@ ubuntu-20.04-1.19.8-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-packet-ubuntu-18.04-1.19.8-build:
+packet-ubuntu-18.04-1.19.9-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: always
@@ -196,7 +196,7 @@ packet-ubuntu-18.04-1.19.8-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.8.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.9.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -211,7 +211,7 @@ packet-ubuntu-18.04-1.19.8-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-packet-ubuntu-20.04-1.19.8-build:
+packet-ubuntu-20.04-1.19.9-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -232,7 +232,7 @@ packet-ubuntu-20.04-1.19.8-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.8.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.9.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -247,7 +247,7 @@ packet-ubuntu-20.04-1.19.8-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-packet-ubuntu-18.04-1.20.4-build:
+packet-ubuntu-18.04-1.20.5-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: always
@@ -268,7 +268,7 @@ packet-ubuntu-18.04-1.20.4-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.20.4.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.20.5.json packer/ova/ubuntu-1804-telekom.json" make build-node-ova-vsphere-ubuntu-1804
     - ls -al output
     - cat ../../build.env
   artifacts:    
@@ -285,7 +285,7 @@ packet-ubuntu-18.04-1.20.4-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-packet-ubuntu-20.04-1.20.4-build:
+packet-ubuntu-20.04-1.20.5-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -306,7 +306,7 @@ packet-ubuntu-20.04-1.20.4-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.20.4.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.20.5.json packer/ova/ubuntu-2004-telekom.json" make build-node-ova-vsphere-ubuntu-1804
   artifacts:
     reports:
       dotenv: build.env
@@ -321,7 +321,7 @@ packet-ubuntu-20.04-1.20.4-build:
       - ./**/result.txt
       - ./**/*.ovf
 
-packet-centos-7-1.19.8-build:
+packet-centos-7-1.19.9-build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
       when: manual
@@ -342,7 +342,7 @@ packet-centos-7-1.19.8-build:
     - env
     - cd images/capi/
     - make deps-ova
-    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.8.json " make build-node-ova-vsphere-centos-7
+    - PACKER_VAR_FILES="$vsphere_packet packer/config/containerd-1.4.4.json packer/config/kubernetes-v1.19.9.json " make build-node-ova-vsphere-centos-7
   artifacts:
     reports:
       dotenv: build.env
