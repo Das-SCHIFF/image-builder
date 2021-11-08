@@ -173,6 +173,7 @@ vsphere-ubuntu:
 
 vsphere-ref:
   needs: []
+  cache: []
   variables:
     GOVC_DEBUG_PATH: "govc/debug"
   rules:
@@ -201,6 +202,7 @@ vsphere-ref:
 
 vsphere-prd:
   needs: []
+  cache: []
   variables:
     GOVC_DEBUG_PATH: "govc/debug"
   rules:
