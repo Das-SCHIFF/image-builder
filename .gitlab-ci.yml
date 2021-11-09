@@ -80,6 +80,16 @@ docker-build-image:
       when: always
     - when: manual
 
+.build-swe-testing:
+  stage: build-swe
+  tags:
+    - docker
+    - SWE
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: always
+    - when: manual
+
 .build-baremetal:
   timeout: 3h
   tags:
@@ -131,7 +141,7 @@ raw-ubuntu:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
         K8SVERSION: [v1.20.12, v1.21.6, v1.22.3]
         CONTAINERDVERSION: ["1.5.7"]
-        UBUNTUVERSION: ["20-04","21-10"]
+        UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
 
 vsphere-ubuntu:
@@ -149,7 +159,48 @@ vsphere-ubuntu:
     matrix:
       - K8SVERSION: [v1.20.12, v1.21.6, v1.22.3]
         CONTAINERDVERSION: ["1.5.7"]
-        UBUNTUVERSION: ["20-04","21-10"]
+        UBUNTUVERSION: ["20-04"]
+        CUSTOMER: [telekom]
+        BOOTMODE: [-efi, ""]
+
+raw-ubuntu-testing:
+  extends:
+    - .imagebuild
+    - .build-swe-testing
+    - .build-baremetal
+  script:
+    - export PATH="$HOME/.local/lib/python3.8/site-packages/:$PATH"
+    - export PATH="$HOME/git/schiff-image-builder/images/capi/.local/bin/:$PATH"
+    - export PATH="$PWD/images/capi/.local/bin/:$PATH"
+    - cd images/capi/
+    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+    - make deps
+    - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
+    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+  parallel:
+    matrix:
+      - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
+        K8SVERSION: [v1.20.12, v1.21.6, v1.22.3]
+        CONTAINERDVERSION: ["1.5.7"]
+        UBUNTUVERSION: ["21-10"]
+        CUSTOMER: [telekom]
+
+vsphere-ubuntu-testing:
+  extends:
+    - .imagebuild
+    - .e2e-artifacts
+    - .build-swe-testing
+  script:
+    - cd images/capi/
+    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+    - make deps-ova
+    - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
+    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+  parallel:
+    matrix:
+      - K8SVERSION: [v1.20.12, v1.21.6, v1.22.3]
+        CONTAINERDVERSION: ["1.5.7"]
+        UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
         BOOTMODE: [-efi, ""]
 
