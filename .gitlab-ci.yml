@@ -154,7 +154,7 @@ vsphere-ubuntu:
     - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
     - make deps-ova
     - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
-    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
     matrix:
       - K8SVERSION: [v1.20.13, v1.21.7, v1.22.4]
@@ -211,6 +211,7 @@ vsphere-ubuntu-testing:
     - docker
     - SWE
   after_script:
+    - source build.env
     - >
       curl -X POST
       --form token=$CI_JOB_TOKEN
@@ -219,7 +220,7 @@ vsphere-ubuntu-testing:
       --form "variables[SITE]=devswe"
       --form "variables[RELEASE]=latest"
       --form "variables[KUBERNETES_VERSION]=${KUBERNETES_VERSION}"
-      --form "variables[BUILD_VERSION]=$BUILD_VERSION"
+      --form "variables[BUILD_VERSION]=${BUILD_VERSION}"
       "https://gitlab.devops.telekom.de/api/v4/projects/14555/trigger/pipeline"
 
 vsphere-ref:
