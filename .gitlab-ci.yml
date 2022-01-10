@@ -139,8 +139,8 @@ raw-ubuntu:
   parallel:
     matrix:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
-        K8SVERSION: [v1.20.13, v1.21.7, v1.22.4]
-        CONTAINERDVERSION: ["1.5.8"]
+        K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+        CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
 
@@ -157,11 +157,11 @@ vsphere-ubuntu:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.20.13, v1.21.7, v1.22.4]
-        CONTAINERDVERSION: ["1.5.8"]
+      - K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+        CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
-        BOOTMODE: [-efi, ""]
+        BOOTMODE: [-efi]
 
 raw-ubuntu-testing:
   extends:
@@ -180,8 +180,8 @@ raw-ubuntu-testing:
   parallel:
     matrix:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
-        K8SVERSION: [v1.20.13, v1.21.7, v1.22.4]
-        CONTAINERDVERSION: ["1.5.8"]
+        K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+        CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
 
@@ -198,11 +198,11 @@ vsphere-ubuntu-testing:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.20.13, v1.21.7, v1.22.4]
-        CONTAINERDVERSION: ["1.5.8"]
+      - K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+        CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
-        BOOTMODE: [-efi, ""]
+        BOOTMODE: [-efi]
 
 # This hidden job is used to trigger e2e image artifacts stages in cluster-definitions repo
 # This should always reference the latest k8s releases for both Ubuntu versions
