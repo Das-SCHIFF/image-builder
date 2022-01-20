@@ -81,7 +81,7 @@ docker-build-image:
     - when: manual
 
 .build-swe-testing:
-  stage: build-swe
+  stage: build-swe-testing
   tags:
     - docker
     - SWE
