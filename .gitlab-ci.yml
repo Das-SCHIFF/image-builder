@@ -2,6 +2,7 @@
 stages:
   - linting
   - build-swe
+  - build-swe-testing
   - test
   - build-image
   - distribute
