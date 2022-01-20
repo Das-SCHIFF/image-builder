@@ -139,7 +139,7 @@ raw-ubuntu:
   parallel:
     matrix:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
-        K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+        K8SVERSION: [v1.20.15, v1.21.9, v1.22.6, v1.23.2]
         CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
@@ -157,7 +157,7 @@ vsphere-ubuntu:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+      - K8SVERSION: [v1.20.15, v1.21.9, v1.22.6, v1.23.2]
         CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
@@ -180,7 +180,7 @@ raw-ubuntu-testing:
   parallel:
     matrix:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
-        K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+        K8SVERSION: [v1.20.15, v1.21.9, v1.22.6, v1.23.2]
         CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
@@ -198,7 +198,7 @@ vsphere-ubuntu-testing:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.20.14, v1.21.8, v1.22.5]
+      - K8SVERSION: [v1.20.15, v1.21.9, v1.22.6, v1.23.2]
         CONTAINERDVERSION: ["1.5.9"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
