@@ -83,6 +83,7 @@ docker-build-image:
 
 .build-swe-testing:
   stage: build-swe-testing
+  needs: []
   tags:
     - docker
     - SWE
