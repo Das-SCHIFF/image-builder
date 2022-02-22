@@ -142,7 +142,7 @@ raw-ubuntu:
     matrix:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
         K8SVERSION: [v1.21.10, v1.22.7, v1.23.4]
-        CONTAINERDVERSION: ["1.5.9", "1.6.0"]
+        CONTAINERDVERSION: ["1.6.0"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
 
@@ -160,7 +160,7 @@ vsphere-ubuntu:
   parallel:
     matrix:
       - K8SVERSION: [v1.21.10, v1.22.7, v1.23.4]
-        CONTAINERDVERSION: ["1.5.9", "1.6.0"]
+        CONTAINERDVERSION: ["1.6.0"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
         BOOTMODE: [-efi]
@@ -183,7 +183,7 @@ raw-ubuntu-testing:
     matrix:
       - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
         K8SVERSION: [v1.21.10, v1.22.7, v1.23.4]
-        CONTAINERDVERSION: ["1.5.9", "1.6.0"]
+        CONTAINERDVERSION: ["1.6.0"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
 
@@ -201,7 +201,7 @@ vsphere-ubuntu-testing:
   parallel:
     matrix:
       - K8SVERSION: [v1.21.10, v1.22.7, v1.23.4]
-        CONTAINERDVERSION: ["1.5.9", "1.6.0"]
+        CONTAINERDVERSION: ["1.6.0"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
         BOOTMODE: [-efi]
