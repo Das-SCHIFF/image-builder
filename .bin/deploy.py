@@ -286,6 +286,29 @@ def main():
                                   vcenter["folder"]+"/"+p["name"][:-4], "-e=disk.enableUUID=1"])
                     logging.error(err.output)
 
+                try:
+                    process = subprocess.run(["govc", "vm.change", "-debug", "-vm", vcenter["folder"]+"/"+p["name"][:-4],
+                                             "-e=ctkEnabled=TRUE"], check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+                    output = process.stdout
+                    logging.info("ctkEnabled=TRUE set")
+                    if output:
+                        logging.info(output)
+                except subprocess.CalledProcessError as err:
+                    logging.debug(["govc", "vm.change", "-debug", "vm",
+                                  vcenter["folder"]+"/"+p["name"][:-4], "-e=ctkEnabled=TRUE"])
+                    logging.error(err.output)
+                try:
+                    process = subprocess.run(["govc", "vm.change", "-debug", "-vm", vcenter["folder"]+"/"+p["name"][:-4],
+                                             "-e=scsi0:0.ctkEnabled=TRUE"], check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+                    output = process.stdout
+                    logging.info("scsi0:0.ctkEnabled=TRUE set")
+                    if output:
+                        logging.info(output)
+                except subprocess.CalledProcessError as err:
+                    logging.debug(["govc", "vm.change", "-debug", "vm",
+                                  vcenter["folder"]+"/"+p["name"][:-4], "-e=scsi0:0.ctkEnabled=TRUE"])
+                    logging.error(err.output)
+
                 try:  # "--version="+str(vcenter["vmx_version"])
                     process = subprocess.run(["govc", "vm.upgrade", "-debug", "--version="+str(vcenter["vmx_version"]), "-vm", vcenter["folder"] +
                                              "/"+p["name"][:-4]], check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
