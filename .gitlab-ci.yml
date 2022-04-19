@@ -140,7 +140,7 @@ raw-ubuntu:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
   parallel:
     matrix:
-      - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
+      - HARDWARE: [HPE-HWE-OFED, HPE-HWE, DL20, DL325, DL20-VXLAN, DL325-VXLAN]
         K8SVERSION: [v1.21.11, v1.22.8, v1.23.5]
         CONTAINERDVERSION: ["1.6.2"]
         UBUNTUVERSION: ["20-04"]
@@ -181,7 +181,7 @@ raw-ubuntu-testing:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
   parallel:
     matrix:
-      - HARDWARE: [DL20, DL325, DL20-VXLAN, DL325-VXLAN]
+      - HARDWARE: [HPE-HWE-OFED, HPE-HWE, DL20, DL325, DL20-VXLAN, DL325-VXLAN]
         K8SVERSION: [v1.21.11, v1.22.8, v1.23.5]
         CONTAINERDVERSION: ["1.6.2"]
         UBUNTUVERSION: ["21-10"]
