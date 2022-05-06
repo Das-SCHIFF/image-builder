@@ -141,7 +141,7 @@ raw-ubuntu:
   parallel:
     matrix:
       - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
-        K8SVERSION: [v1.21.12, v1.22.9, v1.23.6]
+        K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
         CONTAINERDVERSION: ["1.6.2"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
@@ -159,7 +159,7 @@ vsphere-ubuntu:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.21.12, v1.22.9, v1.23.6]
+      - K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
         CONTAINERDVERSION: ["1.6.2"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
@@ -182,7 +182,7 @@ raw-ubuntu-testing:
   parallel:
     matrix:
       - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
-        K8SVERSION: [v1.21.12, v1.22.9, v1.23.6]
+        K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
         CONTAINERDVERSION: ["1.6.2"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
@@ -200,7 +200,7 @@ vsphere-ubuntu-testing:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.21.12, v1.22.9, v1.23.6]
+      - K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
         CONTAINERDVERSION: ["1.6.2"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
