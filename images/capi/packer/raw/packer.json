@@ -24,15 +24,18 @@
       "net_device": "virtio-net",
       "output_directory": "{{user `output_directory`}}",
       "qemu_binary": "{{user `qemu_binary`}}",
+      "qemuargs": [
+        [
+          "-vga",
+          "virtio"
+        ]
+      ],
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S -E sh -c 'usermod -L {{user `ssh_username`}} && {{user `shutdown_command`}}'",
       "ssh_password": "{{user `ssh_password`}}",
       "ssh_timeout": "2h",
       "ssh_username": "{{user `ssh_username`}}",
       "type": "qemu",
-      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}",
-      "qemuargs": [
-        [ "-vga", "virtio"]
-      ]
+      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}"
     },
     {
       "accelerator": "{{user `accelerator`}}",
@@ -57,15 +60,18 @@
       "net_device": "virtio-net",
       "output_directory": "{{user `output_directory`}}",
       "qemu_binary": "{{user `qemu_binary`}}",
+      "qemuargs": [
+        [
+          "-vga",
+          "virtio"
+        ]
+      ],
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S -E sh -c 'usermod -L {{user `ssh_username`}} && {{user `shutdown_command`}}'",
       "ssh_password": "{{user `ssh_password`}}",
       "ssh_timeout": "2h",
       "ssh_username": "{{user `ssh_username`}}",
       "type": "qemu",
-      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}",
-      "qemuargs": [
-        [ "-vga", "virtio"]
-      ]
+      "vm_name": "{{user `build_name`}}-kube-{{user `kubernetes_semver`}}"
     }
   ],
   "post-processors": [
