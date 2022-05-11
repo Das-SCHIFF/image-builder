@@ -142,7 +142,7 @@ raw-ubuntu:
     matrix:
       - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
         K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
-        CONTAINERDVERSION: ["1.6.2"]
+        CONTAINERDVERSION: ["1.6.4"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
 
@@ -160,7 +160,7 @@ vsphere-ubuntu:
   parallel:
     matrix:
       - K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
-        CONTAINERDVERSION: ["1.6.2"]
+        CONTAINERDVERSION: ["1.6.4"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
         BOOTMODE: [-efi]
@@ -183,7 +183,7 @@ raw-ubuntu-testing:
     matrix:
       - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
         K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
-        CONTAINERDVERSION: ["1.6.2"]
+        CONTAINERDVERSION: ["1.6.4"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
 
@@ -201,7 +201,7 @@ vsphere-ubuntu-testing:
   parallel:
     matrix:
       - K8SVERSION: [v1.21.12, v1.22.9, v1.23.6, v1.24.0]
-        CONTAINERDVERSION: ["1.6.2"]
+        CONTAINERDVERSION: ["1.6.4"]
         UBUNTUVERSION: ["21-10"]
         CUSTOMER: [telekom]
         BOOTMODE: [-efi]
