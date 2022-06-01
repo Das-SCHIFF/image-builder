@@ -217,7 +217,7 @@ vsphere-ubuntu-testing:
     - >
       curl -X POST
       --form token=$CI_JOB_TOKEN
-      --form ref=main
+      --form ref=${CI_COMMIT_REF_NAME}
       --form "variables[UBUNTU_VERSION]=${UBUNTU_VERSION}"
       --form "variables[SITE]=devswe"
       --form "variables[RELEASE]=latest"
