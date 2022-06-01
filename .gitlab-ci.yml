@@ -124,27 +124,27 @@ docker-build-image:
       - ./**/goss-spec.yaml
       - ./**/debug-goss-spec.yaml
 
-raw-ubuntu:
-  extends:
-    - .imagebuild
-    - .build-swe
-    - .build-baremetal
-  script:
-    - export PATH="$HOME/.local/lib/python3.8/site-packages/:$PATH"
-    - export PATH="$HOME/git/schiff-image-builder/images/capi/.local/bin/:$PATH"
-    - export PATH="$PWD/images/capi/.local/bin/:$PATH"
-    - cd images/capi/
-    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
-    - make deps
-    - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
-    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
-  parallel:
-    matrix:
-      - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
-        K8SVERSION: [v1.21.13, v1.22.10, v1.23.7, v1.24.1]
-        CONTAINERDVERSION: ["1.6.4"]
-        UBUNTUVERSION: ["20-04"]
-        CUSTOMER: [telekom]
+#raw-ubuntu:
+#  extends:
+#    - .imagebuild
+#    - .build-swe
+#    - .build-baremetal
+#  script:
+#    - export PATH="$HOME/.local/lib/python3.8/site-packages/:$PATH"
+#    - export PATH="$HOME/git/schiff-image-builder/images/capi/.local/bin/:$PATH"
+#    - export PATH="$PWD/images/capi/.local/bin/:$PATH"
+#    - cd images/capi/
+#    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+#    - make deps
+#    - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
+#    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+#  parallel:
+#    matrix:
+#      - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
+#        K8SVERSION: [v1.21.13, v1.22.10, v1.23.7, v1.24.1]
+#        CONTAINERDVERSION: ["1.6.4"]
+#        UBUNTUVERSION: ["20-04"]
+#        CUSTOMER: [telekom]
 
 vsphere-ubuntu:
   extends:
@@ -159,52 +159,52 @@ vsphere-ubuntu:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.21.13, v1.22.10, v1.23.7, v1.24.1]
+      - K8SVERSION: [v1.23.7]
         CONTAINERDVERSION: ["1.6.4"]
         UBUNTUVERSION: ["20-04"]
         CUSTOMER: [telekom]
         BOOTMODE: [-efi]
 
-raw-ubuntu-testing:
-  extends:
-    - .imagebuild
-    - .build-swe-testing
-    - .build-baremetal
-  script:
-    - export PATH="$HOME/.local/lib/python3.8/site-packages/:$PATH"
-    - export PATH="$HOME/git/schiff-image-builder/images/capi/.local/bin/:$PATH"
-    - export PATH="$PWD/images/capi/.local/bin/:$PATH"
-    - cd images/capi/
-    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
-    - make deps
-    - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
-    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
-  parallel:
-    matrix:
-      - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
-        K8SVERSION: [v1.21.13, v1.22.10, v1.23.7, v1.24.1]
-        CONTAINERDVERSION: ["1.6.4"]
-        UBUNTUVERSION: ["21-10"]
-        CUSTOMER: [telekom]
-
-vsphere-ubuntu-testing:
-  extends:
-    - .imagebuild
-    - .e2e-artifacts
-    - .build-swe-testing
-  script:
-    - cd images/capi/
-    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
-    - make deps-ova
-    - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
-    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
-  parallel:
-    matrix:
-      - K8SVERSION: [v1.21.13, v1.22.10, v1.23.7, v1.24.1]
-        CONTAINERDVERSION: ["1.6.4"]
-        UBUNTUVERSION: ["21-10"]
-        CUSTOMER: [telekom]
-        BOOTMODE: [-efi]
+#raw-ubuntu-testing:
+#  extends:
+#    - .imagebuild
+#    - .build-swe-testing
+#    - .build-baremetal
+#  script:
+#    - export PATH="$HOME/.local/lib/python3.8/site-packages/:$PATH"
+#    - export PATH="$HOME/git/schiff-image-builder/images/capi/.local/bin/:$PATH"
+#    - export PATH="$PWD/images/capi/.local/bin/:$PATH"
+#    - cd images/capi/
+#    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+#    - make deps
+#    - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
+#    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+#  parallel:
+#    matrix:
+#      - HARDWARE: [HPE-HWE-OFED, HPE-HWE]
+#        K8SVERSION: [v1.23.7]
+#        CONTAINERDVERSION: ["1.6.4"]
+#        UBUNTUVERSION: ["21-10"]
+#        CUSTOMER: [telekom]
+#
+##vsphere-ubuntu-testing:
+#  extends:
+#    - .imagebuild
+#    - .e2e-artifacts
+#    - .build-swe-testing
+#  script:
+#    - cd images/capi/
+#    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+#    - make deps-ova
+#    - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
+#    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+#  parallel:
+#    matrix:
+#      - K8SVERSION: [v1.21.13, v1.22.10, v1.23.7, v1.24.1]
+#        CONTAINERDVERSION: ["1.6.4"]
+#        UBUNTUVERSION: ["21-10"]
+#        CUSTOMER: [telekom]
+#        BOOTMODE: [-efi]
 
 # This hidden job is used to trigger e2e image artifacts stages in cluster-definitions repo
 # This should always reference the latest k8s releases for both Ubuntu versions
