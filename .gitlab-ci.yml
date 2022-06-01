@@ -153,10 +153,13 @@ vsphere-ubuntu:
     - .build-swe
   script:
     - cd images/capi/
-    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
-    - make deps-ova
-    - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
-    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
+    #- ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+    #- make deps-ova
+    #- IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
+    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" > ../../build.env
+    - echo "KUBERNETES_VERSION=${KUBERNETES_VERSION}" >> ../../build.env
+    - echo "BUILD_VERSION=${BUILD_VERSION}" >> ../../build.env
+    - echo "CONTAINERD_VERSION=${CONTAINERDVERSION}" >> ../../build.env
   parallel:
     matrix:
       - K8SVERSION: [v1.23.7]
