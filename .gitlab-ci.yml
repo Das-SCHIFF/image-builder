@@ -157,10 +157,10 @@ vsphere-ubuntu:
     #- make deps-ova
     #- IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" > build.env
-    #- echo "KUBERNETES_VERSION=v1.22.8" >> build.env
-    - echo "KUBERNETES_VERSION=v1.23.7" >> build.env
-    #- echo "BUILD_VERSION=ubuntu-2004-efi-2022-04-07T10-39z-kube-v1.22.8" >> build.env
-    - echo "BUILD_VERSION=ubuntu-2004-efi-2022-05-30T10-44z-kube-v1.23.7" >> build.env
+    - echo "KUBERNETES_VERSION=v1.22.8" >> build.env
+    #- echo "KUBERNETES_VERSION=v1.23.7" >> build.env
+    - echo "BUILD_VERSION=ubuntu-2004-efi-2022-04-07T10-39z-kube-v1.22.8" >> build.env
+    #- echo "BUILD_VERSION=ubuntu-2004-efi-2022-05-30T10-44z-kube-v1.23.7" >> build.env
     - echo "CONTAINERD_VERSION=${CONTAINERDVERSION}" >> build.env
     - echo "Build details:"
     - cat build.env
