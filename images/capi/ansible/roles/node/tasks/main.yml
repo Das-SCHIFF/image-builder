@@ -76,7 +76,15 @@
     name: auditd
     state: started
     enabled: yes
-  when: ansible_os_family != "Flatcar"
+  when: ansible_os_family != "Debian" and ansible_os_family != "Flatcar"
+
+- name: Ensure auditd is running and comes on at reboot
+  ansible.builtin.systemd:
+    name: auditd
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when: ansible_os_family == "Debian"
 
 - name: configure auditd rules for containerd
   copy:
