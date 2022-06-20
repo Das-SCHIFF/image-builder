@@ -17,7 +17,7 @@
       "floppy_dirs": "{{ user `floppy_dirs`}}",
       "format": "{{user `format`}}",
       "headless": "{{user `headless`}}",
-      "http_directory": "./packer/raw/linux/{{user `distro_name`}}/http/",
+      "http_directory": "{{user `http_directory`}}",
       "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
       "iso_url": "{{user `iso_url`}}",
       "memory": "{{user `memory`}}",
@@ -116,7 +116,33 @@
         "--extra-vars",
         "{{user `ansible_common_vars`}}",
         "--extra-vars",
-        "{{user `ansible_extra_vars`}}"
+        "{{user `ansible_extra_vars`}}",
+        "--extra-vars",
+        "{{user `ansible_user_vars`}}"
+      ],
+      "playbook_file": "./ansible/firstboot.yml",
+      "type": "ansible",
+      "user": "builder"
+    },
+    {
+      "expect_disconnect": true,
+      "inline": [
+        "sudo reboot now"
+      ],
+      "inline_shebang": "/bin/bash -e",
+      "type": "shell"
+    },
+    {
+      "ansible_env_vars": [
+        "ANSIBLE_SSH_ARGS='{{user `existing_ansible_ssh_args`}} -o IdentitiesOnly=yes'"
+      ],
+      "extra_arguments": [
+        "--extra-vars",
+        "{{user `ansible_common_vars`}}",
+        "--extra-vars",
+        "{{user `ansible_extra_vars`}}",
+        "--extra-vars",
+        "{{user `ansible_user_vars`}}"
       ],
       "playbook_file": "./ansible/node.yml",
       "type": "ansible",
@@ -156,6 +182,7 @@
     "accelerator": "kvm",
     "ansible_common_vars": "",
     "ansible_extra_vars": "ansible_python_interpreter=/usr/bin/python3",
+    "ansible_user_vars": "",
     "boot_wait": "10s",
     "build_target": "raw",
     "build_timestamp": "{{timestamp}}",
@@ -171,6 +198,7 @@
     "firmware": "",
     "format": "raw",
     "headless": "true",
+    "http_directory": "./packer/raw/linux/{{user `distro_name`}}/http/",
     "kubernetes_cni_deb_version": null,
     "kubernetes_cni_http_source": null,
     "kubernetes_cni_semver": null,
