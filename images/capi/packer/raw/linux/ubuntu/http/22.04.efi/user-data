@@ -98,6 +98,11 @@ autoinstall:
   # 4. Cleans up any packages that are no longer required
   # 5. Removes the cached list of packages
   late-commands:
+    - |
+      if [ -d /sys/firmware/efi ]; then
+        apt-get install -y efibootmgr
+        efibootmgr -o $(efibootmgr | perl -n -e '/Boot(.+)\* ubuntu/ && print $1')
+      fi
     - swapoff -a
     - rm -f /swapfile
     - sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
