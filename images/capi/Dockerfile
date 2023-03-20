@@ -57,7 +57,8 @@ RUN /bin/sh /tmp/$OVFTOOL_FILENAME --console --required --eulas-agreed && \
     rm -f /tmp/$OVFTOOL_FILENAME
 
 ## run chmod 777 on /home/imagebuilder to allow imagebuilder user to write to the directory
-RUN chmod 777 /home/imagebuilder
+RUN chmod -R 777 /home/imagebuilder && \
+    chown -R imagebuilder:imagebuilder /home/imagebuilder
 
 USER imagebuilder
 WORKDIR /home/imagebuilder/
@@ -69,7 +70,7 @@ COPY --chown=imagebuilder:imagebuilder hack hack/
 COPY --chown=imagebuilder:imagebuilder packer packer/
 COPY --chown=imagebuilder:imagebuilder Makefile Makefile
 COPY --chown=imagebuilder:imagebuilder azure_targets.sh azure_targets.sh
-
+RUN chmod -R 777 /home/imagebuilder 
 ENV PATH="/home/imagebuilder/.local/bin:${PATH}"
 ENV PACKER_ARGS ''
 ENV PACKER_VAR_FILES ''

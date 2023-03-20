@@ -136,6 +136,8 @@ raw-ubuntu:
     - cd images/capi/
     - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
     - make deps-raw
+    - pwd
+    - whoami
     - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
   parallel:
@@ -155,6 +157,8 @@ vsphere-ubuntu:
     - cd images/capi/
     - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
     - make deps-ova
+    - pwd
+    - whoami
     - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
