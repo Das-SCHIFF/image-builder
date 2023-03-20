@@ -8,4 +8,5 @@
 !hack
 !packer
 !Makefile
+!*.bundle
 !azure_targets.sh

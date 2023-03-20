@@ -285,7 +285,7 @@ FLATCAR_VERSIONS		:=	flatcar
 PHOTON_VERSIONS			:=	photon-3 photon-4
 RHEL_VERSIONS			:=	rhel-7 rhel-8
 ROCKYLINUX_VERSIONS     :=  rockylinux-8
-UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004 ubuntu-2004-efi ubuntu-2204 ubuntu-2204-efi
+UBUNTU_VERSIONS			:=	ubuntu-1804 ubuntu-2004 ubuntu-2004-efi ubuntu-2004-telekom ubuntu-2004-efi-telekom ubuntu-2204 ubuntu-2204-efi
 WINDOWS_VERSIONS		:=	windows-2019 windows-2004 windows-2022
 
 # Set Flatcar Container Linux channel and version if not supplied
@@ -332,7 +332,7 @@ OSC_BUILD_NAMES 			?=	osc-ubuntu-2004
 QEMU_BUILD_NAMES			?=	qemu-ubuntu-1804 qemu-ubuntu-2004 qemu-ubuntu-2204 qemu-centos-7 qemu-ubuntu-2004-efi qemu-rhel-8 qemu-rockylinux-8 qemu-flatcar
 QEMU_KUBEVIRT_BUILD_NAMES	:= $(addprefix kubevirt-,$(QEMU_BUILD_NAMES))
 
-RAW_BUILD_NAMES                        ?=      raw-ubuntu-1804 raw-ubuntu-2004 raw-ubuntu-2004-efi raw-flatcar
+RAW_BUILD_NAMES                        ?=      raw-ubuntu-1804 raw-ubuntu-2004 raw-ubuntu-2004-efi raw-ubuntu-2204 raw-ubuntu-2204-efi raw-flatcar
 VBOX_BUILD_NAMES			?=      vbox-windows-2019
 
 POWERVS_BUILD_NAMES         ?= powervs-centos-8
@@ -478,11 +478,11 @@ $(QEMU_KUBEVIRT_VALIDATE_TARGETS): deps-qemu
 
 .PHONY: $(RAW_BUILD_TARGETS)
 $(RAW_BUILD_TARGETS): deps-raw
-	packer build $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst build-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
+	packer build  -except=flatcar $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst build-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
 
 .PHONY: $(RAW_VALIDATE_TARGETS)
 $(RAW_VALIDATE_TARGETS): deps-raw
-	packer validate $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst validate-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
+	packer validate -except=flatcar $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst validate-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
 
 .PHONY: $(OCI_BUILD_TARGETS)
 $(OCI_BUILD_TARGETS): deps-oci
@@ -690,6 +690,8 @@ build-raw-flatcar: ## Builds Flatcar RAW image
 build-raw-ubuntu-1804: ## Builds Ubuntu 18.04 RAW image
 build-raw-ubuntu-2004: ## Builds Ubuntu 20.04 RAW image
 build-raw-ubuntu-2004-efi: ## Builds Ubuntu 20.04 RAW image that EFI boots
+build-raw-ubuntu-2204: ## Builds Ubuntu 22.04 RAW image
+build-raw-ubuntu-2204-efi: ## Builds Ubuntu 22.04 RAW image that EFI boots
 build-raw-all: $(RAW_BUILD_TARGETS) ## Builds all RAW images
 
 build-oci-ubuntu-1804: ## Builds the OCI ubuntu-1804 image
@@ -814,6 +816,8 @@ validate-raw-flatcar: ## Validates Flatcar RAW image packer config
 validate-raw-ubuntu-1804: ## Validates Ubuntu 18.04 RAW image packer config
 validate-raw-ubuntu-2004: ## Validates Ubuntu 20.04 RAW image packer config
 validate-raw-ubuntu-2004-efi: ## Validates Ubuntu 20.04 RAW EFI image packer config
+validate-raw-ubuntu-2204: ## Validates Ubuntu 22.04 RAW image packer config
+validate-raw-ubuntu-2204-efi: ## Validates Ubuntu 22.04 RAW EFI image packer config
 validate-raw-all: $(RAW_VALIDATE_TARGETS) ## Validates all RAW Packer config
 
 validate-oci-ubuntu-1804: ## Validates the OCI ubuntu-1804 image packer config

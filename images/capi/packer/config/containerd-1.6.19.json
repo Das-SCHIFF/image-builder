@@ -1,0 +1,6 @@
+{
+  "containerd_additional_settings": null,
+  "containerd_cri_socket": "/var/run/containerd/containerd.sock",
+  "containerd_sha256": "0457907ec410c2172829f6d1808f43fd2b83395a242bcb677cfe26320df13d5d",
+  "containerd_version": "1.6.19"
+}

@@ -1,0 +1,8 @@
+*.ova
+vcenter.pwd
+*.ova.json
+*.ova*.json
+poetry.lock
+.bin/vcenter_creds_ref.yaml
+.bin/vcenter_creds_prd.yaml
+deploy.log
