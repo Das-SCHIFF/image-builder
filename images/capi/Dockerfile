@@ -28,6 +28,9 @@ RUN apt-get update && apt-get install -y apt-transport-https build-essential ca-
     && apt-get purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 
+# add imagebuilder user to sudoers
+RUN echo "imagebuilder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
 ARG ARCH
 ARG PASSED_IB_VERSION
 
@@ -52,6 +55,9 @@ RUN govc version
 
 RUN /bin/sh /tmp/$OVFTOOL_FILENAME --console --required --eulas-agreed && \
     rm -f /tmp/$OVFTOOL_FILENAME
+
+## run chmod 777 on /home/imagebuilder to allow imagebuilder user to write to the directory
+RUN chmod 777 /home/imagebuilder
 
 USER imagebuilder
 WORKDIR /home/imagebuilder/
