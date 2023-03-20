@@ -141,7 +141,7 @@ raw-ubuntu:
   parallel:
     matrix:
       - HARDWARE: [HPE-HWE-OFED, HPE-HWE, LENOVO-HWE-OFED, LENOVO-HWE]
-        K8SVERSION: [v1.23.18, v1.24.12, v1.25.8, v1.26.3]
+        K8SVERSION: [v1.23.17, v1.24.12, v1.25.8, v1.26.3]
         CONTAINERDVERSION: ["1.6.19", "1.7.0"]
         UBUNTUVERSION: ["20-04", "22-04"]
         CUSTOMER: [telekom]
@@ -159,7 +159,7 @@ vsphere-ubuntu:
     - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
   parallel:
     matrix:
-      - K8SVERSION: [v1.23.18, v1.24.12, v1.25.8, v1.26.3]
+      - K8SVERSION: [v1.23.17, v1.24.12, v1.25.8, v1.26.3]
         CONTAINERDVERSION: ["1.6.19", "1.7.0"]
         UBUNTUVERSION: ["20-04","22-04"]
         CUSTOMER: [telekom]
