@@ -59,6 +59,10 @@ RUN /bin/sh /tmp/$OVFTOOL_FILENAME --console --required --eulas-agreed && \
 ## run chmod 777 on /home/imagebuilder to allow imagebuilder user to write to the directory
 RUN chmod -R 777 /home/imagebuilder && \
     chown -R imagebuilder:imagebuilder /home/imagebuilder
+# create /builds directory, which is used by the imagebuilder user
+RUN mkdir -p /builds && \
+    chown -R imagebuilder:imagebuilder /builds && \
+    chmod -R 777 /builds
 
 USER imagebuilder
 WORKDIR /home/imagebuilder/
