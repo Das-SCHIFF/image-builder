@@ -31,12 +31,45 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	wget \
 	qemu-system-x86 \
 	qemu-kvm \
+ENV LC_CTYPE=POSIX
+ENV OVFTOOL_FILENAME=VMware-ovftool-4.4.3-18663434-lin.x86_64.bundle
+ENV PATH="/root/.local/bin:$PATH"
+ADD $OVFTOOL_FILENAME /tmp/
+
+RUN apt-get update && apt-get install -y apt-transport-https build-essential ca-certificates curl gcc genisoimage git bash jq libffi-dev libssl-dev make openssh-client openssl python3-dev python3-pip rsync sed sshpass unzip vim wget xorriso  \
     && useradd -ms /bin/bash imagebuilder \
     && apt-get purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 
 ARG ARCH
 ARG PASSED_IB_VERSION
+
+
+RUN curl -L https://vault.bitwarden.com/download/\?app\=cli\&platform\=linux > bitwarden.zip
+RUN unzip bitwarden.zip
+RUN mv bw /usr/local/bin/bw
+RUN chmod +x /usr/local/bin/bw
+RUN rm bitwarden.zip
+
+RUN curl -fL https://getcli.jfrog.io | sh
+RUN mv jfrog /usr/local/bin/jfrog
+RUN chmod +x /usr/local/bin/jfrog
+RUN jfrog -v
+
+# get version from https://github.com/vmware/govmomi/releases/latest
+ENV VERSION=v0.30.4
+ENV URL=https://github.com/vmware/govmomi/releases/download/${VERSION}/govc_Linux_x86_64.tar.gz
+RUN curl -L -o - $URL | tar -C /usr/local/bin -xvzf - govc
+RUN chmod +x /usr/local/bin/govc
+RUN govc version
+
+RUN /bin/sh /tmp/$OVFTOOL_FILENAME --console --required --eulas-agreed && \
+    rm -f /tmp/$OVFTOOL_FILENAME
+
+# create /builds directory, which is used by the imagebuilder user
+RUN mkdir -p /builds && \
+    chown -R imagebuilder:imagebuilder /builds && \
+    chmod -R 777 /builds
 
 USER imagebuilder
 WORKDIR /home/imagebuilder/
@@ -48,12 +81,13 @@ COPY --chown=imagebuilder:imagebuilder hack hack/
 COPY --chown=imagebuilder:imagebuilder packer packer/
 COPY --chown=imagebuilder:imagebuilder Makefile Makefile
 COPY --chown=imagebuilder:imagebuilder azure_targets.sh azure_targets.sh
-
 ENV PATH="/home/imagebuilder/.local/bin:${PATH}"
 ENV PACKER_ARGS ''
 ENV PACKER_VAR_FILES ''
 ENV IB_VERSION "${PASSED_IB_VERSION}"
 
 RUN make deps
+RUN pip install pyVmomi tools pyvim dohq-artifactory pyyaml tqdm
+
 
 ENTRYPOINT [ "/usr/bin/make" ]

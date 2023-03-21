@@ -1,0 +1,252 @@
+---
+stages:
+  - linting
+  - build-swe
+  - build-swe-testing
+  - test
+  - build-image
+  - distribute
+
+yamllint:
+  rules:
+    - when: always
+      allow_failure: true
+  stage: linting
+  image: docker.io/pipelinecomponents/yamllint:latest
+  script:
+    - yamllint .
+
+shelllint:
+  rules:
+    - when: always
+      allow_failure: true
+  stage: linting
+  image: docker.io/koalaman/shellcheck-alpine:latest
+  before_script:
+    - apk update
+    - apk add git
+  script:
+    - git ls-files --exclude='*.sh' --ignored | xargs shellcheck
+
+jsonlint:
+  rules:
+    - when: always
+      allow_failure: true
+  stage: linting
+  image: docker.io/pipelinecomponents/jsonlint:latest
+  script:
+    - |
+      find . -not -path './.git/*' -name '*.json' -type f -print0 |
+      parallel --will-cite -k -0 -n1 jsonlint -q
+
+ansibleLint:
+  rules:
+    - when: always
+      allow_failure: true
+  image: docker.io/georgiapipeline/georgia-pipeline-ansible-slim
+  stage: linting
+  before_script:
+    - ansible --version
+    - ansible-lint --version
+  script:
+    - ansible-lint -x 703,701 images/capi/ansible/node.yml images/capi/ansible/haproxy.yml
+
+docker-build-image:
+  # Official docker image.
+  image: docker.io/library/docker:latest
+  stage: build-image
+  tags:
+    - otc_run_docker_m
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" images/capi --build-arg https_proxy=http://proxy.devops.telekom.de:3128 --build-arg http_proxy=http://proxy.devops.telekom.de:3128
+    - docker push "$CI_REGISTRY_IMAGE"
+    - docker save "$CI_REGISTRY_IMAGE" -o "$CI_PROJECT_TITLE".tar.gz
+  rules:
+    - when: manual
+  needs: []
+
+.build-swe:
+  stage: build-swe
+  tags:
+    - docker
+    - SWE
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
+
+.build-swe-testing:
+  stage: build-swe-testing
+  needs: []
+  tags:
+    - docker
+    - SWE
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "schiff-main"'
+      when: always
+    - when: manual
+
+.build-baremetal:
+  timeout: 3h
+  tags:
+    - qemu
+    - SWE
+
+.imagebuild:
+  timeout: 1h40m
+  variables:
+    PACKER_LOG_PATH: "packer.log"
+    PACKER_LOG: "1"
+  image:
+    name: registry.devops.telekom.de/t-dci-image-building/schiff-image-builder:latest
+    entrypoint: [""]
+  stage: build
+  artifacts:
+    reports:
+      dotenv: build.env
+    when: always
+    paths:
+      - ./**/packer.log
+      - ./**/aptlist.yml
+      - ./**/pkglist.yml
+      - ./**/packagelist.yml
+      - ./**/yumlist.yml
+      - ./**/ansible_facts.yml
+      - ./**/packer_builder_type.yml
+      - ./**/results.txt
+      - ./**/result.txt
+      - ./**/*.ovf
+      - ./**/goss-spec.yaml
+      - ./**/debug-goss-spec.yaml
+
+raw-ubuntu:
+  extends:
+    - .imagebuild
+    - .build-swe
+    - .build-baremetal
+  script:
+    - export PATH="$HOME/.local/lib/python3.8/site-packages/:$PATH"
+    - export PATH="$HOME/git/schiff-image-builder/images/capi/.local/bin/:$PATH"
+    - export PATH="$PWD/images/capi/.local/bin/:$PATH"
+    - cd images/capi/
+    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+    - make deps-raw
+    - pwd
+    - whoami
+    - IB_OVFTOOL=1 PACKER_VAR_FILES="packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/raw/raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi-${CUSTOMER}-${HARDWARE}.json" make build-raw-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )-efi
+    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../buid.env
+  parallel:
+    matrix:
+      - HARDWARE: [HPE-HWE-OFED, HPE-HWE, LENOVO-HWE-OFED, LENOVO-HWE, GENERIC-HWE]
+        K8SVERSION: [v1.23.17, v1.24.14, v1.25.10]
+        CONTAINERDVERSION: ["1.7.2"]
+        UBUNTUVERSION: ["20-04", "22-04"]
+        CUSTOMER: [telekom]
+
+vsphere-ubuntu:
+  extends:
+    - .imagebuild
+    - .e2e-artifacts
+    - .build-swe
+  script:
+    - cd images/capi/
+    - ansible-galaxy collection install -f git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.devops.telekom.de/t-dci-image-building/schiff-collection.git#schiff/images
+    - make deps-ova
+    - pwd
+    - whoami
+    - IB_OVFTOOL=1 PACKER_VAR_FILES="$vsphere_swe packer/config/containerd-${CONTAINERDVERSION}.json packer/config/kubernetes-${K8SVERSION}.json packer/ova/ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}-${CUSTOMER}.json" make build-node-ova-vsphere-ubuntu-$(echo ${UBUNTUVERSION} | tr -d - )${BOOTMODE}
+    - echo "UBUNTU_VERSION=${UBUNTUVERSION}" >> ../../build.env
+  parallel:
+    matrix:
+      - K8SVERSION: [v1.23.17, v1.24.14, v1.25.10]
+        CONTAINERDVERSION: ["1.7.2"]
+        UBUNTUVERSION: ["20-04","22-04"]
+        CUSTOMER: [telekom]
+        BOOTMODE: [-efi]
+
+# This hidden job is used to trigger e2e image artifacts stages in cluster-definitions repo
+# This should always reference the latest k8s releases for both Ubuntu versions
+.e2e-artifacts:
+  tags:
+    - docker
+    - SWE
+  after_script:
+    - source build.env
+    - >
+      curl -X POST
+      --form token=$CI_JOB_TOKEN
+      --form ref=main
+      --form "variables[UBUNTU_VERSION]=${UBUNTU_VERSION}"
+      --form "variables[SITE]=devswe"
+      --form "variables[RELEASE]=latest"
+      --form "variables[KUBERNETES_VERSION]=${KUBERNETES_VERSION}"
+      --form "variables[BUILD_VERSION]=${BUILD_VERSION}"
+      "https://gitlab.devops.telekom.de/api/v4/projects/14555/trigger/pipeline"
+
+vsphere-ref:
+  timeout: 3h
+  needs: []
+  cache: []
+  variables:
+    GOVC_DEBUG_PATH: "govc/debug"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
+  tags:
+    - docker
+    - JOS-2011
+  image:
+    name: registry.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
+    entrypoint: [""]
+  stage: distribute
+  script:
+    - python3 .bin/deploy.py --vcenter_config_file $vcenter_creds_ref
+  artifacts:
+    when: always
+    paths:
+      - ./**/*.log
+      - ~/.govmomi/debug/*
+      - ./**/govc/**
+      - ./**/govc/debug/**
+      - ./govc/debug/**
+      - ./*.json
+      - deploy.log
+
+vsphere-prd:
+  timeout: 3h
+  needs: []
+  cache: []
+  variables:
+    GOVC_DEBUG_PATH: "govc/debug"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
+  tags:
+    - docker
+    - JOS-2011
+  image:
+    name: registry.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
+    entrypoint: [""]
+  stage: distribute
+  script:
+    - bash -c ".bin/deploy.py --vcenter_config_file $vcenter_creds_prd"
+  artifacts:
+    when: always
+    paths:
+      - ./**/*.log
+      - ~/.govmomi/debug/*
+      - ./**/govc/**
+      - ./**/govc/debug/**
+      - ./govc/debug/**
+      - ./*.json
+      - deploy.log
+
+

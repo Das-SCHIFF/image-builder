@@ -1,0 +1,17 @@
+{
+  "crictl_sha256": "0c1a0f9900c15ee7a55e757bcdc220faca5dd2e1cfc120459ad1f04f08598127",
+  "crictl_source_type": "pkg",
+  "crictl_version": "1.26.1",
+  "kubeadm_template": "etc/kubeadm.yml",
+  "kubernetes_container_registry": "registry.k8s.io",
+  "kubernetes_deb_repo": "\"https://apt.kubernetes.io/ kubernetes-xenial\"",
+  "kubernetes_deb_version": "1.25.10-00",
+  "kubernetes_load_additional_imgs": "false",
+  "kubernetes_rpm_version": "1.25.10-0",
+  "kubernetes_semver": "v1.25.10",
+  "kubernetes_series": "v1.25",
+  "kubernetes_source_type": "pkg",
+  "systemd_prefix": "/usr/lib/systemd",
+  "sysusr_prefix": "/usr",
+  "sysusrlocal_prefix": "/usr/local"
+}

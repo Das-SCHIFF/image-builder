@@ -24,6 +24,9 @@ autoinstall:
   locale: en_US.UTF-8
   keyboard:
     layout: us
+  grub:
+    reorder_uefi: false
+    replace_linux_default: false
   # For more information on how partitioning is configured,
   # please refer to https://curtin.readthedocs.io/en/latest/topics/storage.html.
   storage:
