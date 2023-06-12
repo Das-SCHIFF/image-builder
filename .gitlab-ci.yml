@@ -204,10 +204,13 @@ vsphere-ref:
     - JOS-2011
     - k8s
   image:
-    name: registry.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
+    name: registry-internal.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
     entrypoint: [""]
   stage: distribute
   script:
+    - pwd
+    - ls /
+    - whoami
     - python3 .bin/deploy.py --vcenter_config_file $vcenter_creds_ref
   artifacts:
     when: always
