@@ -208,9 +208,6 @@ vsphere-ref:
     entrypoint: [""]
   stage: distribute
   script:
-    - pwd
-    - ls /
-    - whoami
     - python3 .bin/deploy.py --vcenter_config_file $vcenter_creds_ref
   artifacts:
     when: always
