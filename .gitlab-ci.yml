@@ -202,6 +202,7 @@ vsphere-ref:
   tags:
     - docker
     - JOS-2011
+    - k8s
   image:
     name: registry.devops.telekom.de/t-dci-image-building/helper-docker-images/bw-govc-python-ubuntu:latest
     entrypoint: [""]
