@@ -1,0 +1,8 @@
+{
+  "crictl_version": "1.25.0",
+  "kubernetes_deb_version": "1.24.17-1.1",
+  "kubernetes_load_additional_imgs": "false",
+  "kubernetes_rpm_version": "1.24.17-0",
+  "kubernetes_semver": "v1.24.17",
+  "kubernetes_series": "v1.24"
+}

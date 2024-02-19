@@ -320,7 +320,7 @@ FLATCAR_VERSIONS		:=	flatcar
 PHOTON_VERSIONS			:=	photon-3 photon-4 photon-5
 RHEL_VERSIONS			:=	rhel-7 rhel-8
 ROCKYLINUX_VERSIONS     :=  rockylinux-8
-UBUNTU_VERSIONS			:=	ubuntu-2004 ubuntu-2004-efi ubuntu-2204 ubuntu-2204-efi
+UBUNTU_VERSIONS			:=	ubuntu-2004 ubuntu-2004-efi ubuntu-2004-telekom ubuntu-2004-efi-telekom ubuntu-2204 ubuntu-2204-efi ubuntu-2310-efi ubuntu-2404-efi
 WINDOWS_VERSIONS		:=	windows-2019 windows-2022
 
 # Set Flatcar Container Linux channel and version if not supplied
@@ -372,7 +372,8 @@ QEMU_BUILD_NAMES			?=	qemu-ubuntu-2004 qemu-ubuntu-2204 qemu-ubuntu-2304 qemu-ub
 
 QEMU_KUBEVIRT_BUILD_NAMES	:= $(addprefix kubevirt-,$(QEMU_BUILD_NAMES))
 
-RAW_BUILD_NAMES				?=      raw-ubuntu-2004 raw-ubuntu-2004-efi raw-flatcar raw-rhel-8
+RAW_BUILD_NAMES                        ?=   raw-ubuntu-2004 raw-ubuntu-2004-efi raw-ubuntu-2204 raw-ubuntu-2204-efi raw-ubuntu-2310-efi raw-ubuntu-2404-efi raw-flatcar raw-rhel-8
+
 VBOX_BUILD_NAMES			?=      vbox-windows-2019
 
 POWERVS_BUILD_NAMES         ?= powervs-centos-8
@@ -546,11 +547,11 @@ $(QEMU_KUBEVIRT_VALIDATE_TARGETS): deps-qemu
 
 .PHONY: $(RAW_BUILD_TARGETS)
 $(RAW_BUILD_TARGETS): deps-raw
-	$(PACKER) build $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst build-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
+	$(PACKER) build -except=flatcar $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst build-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
 
 .PHONY: $(RAW_VALIDATE_TARGETS)
 $(RAW_VALIDATE_TARGETS): deps-raw
-	$(PACKER) validate $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst validate-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
+	$(PACKER) validate -except=flatcar $(PACKER_NODE_FLAGS) -var-file="$(abspath packer/raw/$(subst validate-,,$@).json)" $(ABSOLUTE_PACKER_VAR_FILES) packer/raw/packer.json
 
 .PHONY: $(OCI_BUILD_TARGETS)
 $(OCI_BUILD_TARGETS): deps-oci
@@ -708,6 +709,8 @@ build-node-ova-vsphere-ubuntu-2004: ## Builds Ubuntu 20.04 Node OVA and template
 build-node-ova-vsphere-ubuntu-2004-efi: ## Builds Ubuntu 20.04 Node OVA and template on vSphere that EFI boots
 build-node-ova-vsphere-ubuntu-2204: ## Builds Ubuntu 22.04 Node OVA and template on vSphere
 build-node-ova-vsphere-ubuntu-2204-efi: ## Builds Ubuntu 22.04 Node OVA and template on vSphere that EFI boots
+build-node-ova-vsphere-ubuntu-2310-efi: ## Builds Ubuntu 23.10 Node OVA and template on vSphere that EFI boots
+build-node-ova-vsphere-ubuntu-2404-efi: ## Builds Ubuntu 24.04 Node OVA and template on vSphere that EFI boots
 build-node-ova-vsphere-windows-2019: ## Builds for Windows Server 2019 and template on vSphere
 build-node-ova-vsphere-windows-2022: ## Builds for Windows Server 2022 template on vSphere
 build-node-ova-vsphere-all: $(NODE_OVA_VSPHERE_BUILD_TARGETS) ## Builds all Node OVAs and templates on vSphere
@@ -776,6 +779,10 @@ build-raw-flatcar: ## Builds Flatcar RAW image
 build-raw-ubuntu-2004: ## Builds Ubuntu 20.04 RAW image
 build-raw-ubuntu-2004-efi: ## Builds Ubuntu 20.04 RAW image that EFI boots
 build-raw-rhel-8: ## Builds RHEL 8 RAW image
+build-raw-ubuntu-2204: ## Builds Ubuntu 22.04 RAW image
+build-raw-ubuntu-2204-efi: ## Builds Ubuntu 22.04 RAW image that EFI boots
+build-raw-ubuntu-2310-efi: ## Builds Ubuntu 23.10 RAW image that EFI boots
+build-raw-ubuntu-2404-efi: ## Builds Ubuntu 24.04 RAW image that EFI boots
 build-raw-all: $(RAW_BUILD_TARGETS) ## Builds all RAW images
 
 build-oci-ubuntu-2004: ## Builds the OCI ubuntu-2004 image
@@ -914,6 +921,8 @@ validate-raw-flatcar: ## Validates Flatcar RAW image packer config
 validate-raw-ubuntu-2004: ## Validates Ubuntu 20.04 RAW image packer config
 validate-raw-ubuntu-2004-efi: ## Validates Ubuntu 20.04 RAW EFI image packer config
 validate-raw-rhel-8: ## Validates RHEL 8 RAW image packer config
+validate-raw-ubuntu-2204: ## Validates Ubuntu 22.04 RAW image packer config
+validate-raw-ubuntu-2204-efi: ## Validates Ubuntu 22.04 RAW EFI image packer config
 validate-raw-all: $(RAW_VALIDATE_TARGETS) ## Validates all RAW Packer config
 
 validate-oci-ubuntu-2004: ## Validates the OCI ubuntu-2004 image packer config

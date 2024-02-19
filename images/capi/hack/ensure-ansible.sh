@@ -34,6 +34,8 @@ export PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_ROOT_USER_ACTION=ignore
 
 if ! command -v ansible >/dev/null 2>&1; then
     pip3_install "ansible-core==${_version}"
+    pip3_install "ansible==9.0.1"
+
     ensure_py3_bin ansible
     ensure_py3_bin ansible-playbook
 fi

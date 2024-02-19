@@ -117,3 +117,14 @@
     path: /etc/cloud/ds-identify.cfg
     state: absent
   when: ansible_distribution_version is version('22.04', '>=')
+
+- name: remove subiquity install logs
+  file:
+    path: "{{ item }}"
+    state: absent
+  when: ansible_distribution_version is version('22.04', '>=')
+  loop:
+  - /var/log/installer/subiquity-server-debug.log
+  - /var/log/installer/subiquity-server-info.log
+  - /var/log/installer/
+
